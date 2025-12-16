@@ -215,15 +215,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       line-height: 1.7;
     }
 
-    /* Team Placeholder */
+    /* Team Section */
     .team-intro {
       max-width: 600px;
-      margin: 0 auto 48px;
+      margin: 0 auto 64px;
       text-align: center;
     }
 
     .team-intro p {
-      font-size: 0.95rem;
+      font-size: 1rem;
       color: #525252;
       line-height: 1.8;
     }
@@ -231,53 +231,101 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     .team-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 32px;
-      max-width: 800px;
+      gap: 48px;
+      max-width: 1000px;
       margin: 0 auto;
     }
 
-    @media (min-width: 600px) {
+    @media (min-width: 768px) {
       .team-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 40px;
       }
     }
 
     .team-member {
       text-align: center;
+      padding: 40px 24px;
+      background: #ffffff;
+      border: 1px solid #e5e5e5;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .team-member:hover {
+      border-color: #c0c0c0;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
     }
 
     .team-photo {
-      width: 120px;
-      height: 120px;
+      width: 140px;
+      height: 140px;
       border-radius: 50%;
       object-fit: cover;
       object-position: center top;
       background-color: #e5e5e5;
-      margin: 0 auto 20px;
+      margin: 0 auto 24px;
+      border: 3px solid #f5f5f5;
     }
 
     .team-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.15rem;
+      font-size: 1.5rem;
       font-weight: 400;
       color: #0a0a0a;
-      margin-bottom: 4px;
+      margin-bottom: 8px;
+      letter-spacing: 0.01em;
     }
 
     .team-role {
-      font-size: 0.75rem;
-      font-weight: 400;
-      letter-spacing: 0.1em;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: #858585;
-      margin-bottom: 16px;
+      color: #0a0a0a;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e5e5e5;
     }
 
-    .team-bio {
+    .team-credentials {
       font-size: 0.85rem;
+      color: #858585;
+      font-style: italic;
+      margin-bottom: 16px;
+      letter-spacing: 0.02em;
+    }
+
+    .team-licences {
+      font-size: 0.75rem;
+      color: #525252;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .team-licence-item {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #f5f5f5;
+      margin: 3px;
+      font-size: 0.7rem;
+      letter-spacing: 0.03em;
+    }
+
+    .team-focus {
+      font-size: 0.8rem;
       color: #525252;
       line-height: 1.7;
+      padding-top: 16px;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .team-focus-label {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #a0a0a0;
+      margin-bottom: 8px;
     }
 
     /* Advisers Note */
@@ -435,7 +483,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       
       <div class="team-intro">
         <p>
-          CALDON is led by principals with backgrounds in property development, construction management, and investment structuring. Our extended team includes specialists in architecture, engineering, and quantity surveying.
+          CALDON™ is led by principals with decades of combined experience across property development, construction management, and investment structuring.
         </p>
       </div>
 
@@ -444,29 +492,42 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <img src="/team/bradley-caldon.jpg" alt="Bradley Caldon" class="team-photo" />
           <h3 class="team-name">Bradley Caldon</h3>
           <p class="team-role">Managing Director</p>
-          <p class="team-bio">
-            BConstMgt(Bldg)(Hons)<br>
-            Licensed Builder (NSW) · Building Practitioner BUP0002269<br>
+          <p class="team-credentials">BConstMgt(Bldg)(Hons)</p>
+          <div class="team-licences">
+            <span class="team-licence-item">Licensed Builder NSW</span>
+            <span class="team-licence-item">BUP0002269</span>
+          </div>
+          <div class="team-focus">
+            <p class="team-focus-label">Focus</p>
             Research, Acquisitions, Quantity Surveying & Tender Management
-          </p>
+          </div>
         </div>
         <div class="team-member">
           <img src="/team/john-caldon.jpg" alt="John Caldon" class="team-photo" />
           <h3 class="team-name">John Caldon</h3>
           <p class="team-role">Senior Adviser</p>
-          <p class="team-bio">
-            Licensed Builder (NSW)<br>
+          <p class="team-credentials">Licensed Builder (NSW)</p>
+          <div class="team-licences">
+            <span class="team-licence-item">40+ Years Experience</span>
+          </div>
+          <div class="team-focus">
+            <p class="team-focus-label">Focus</p>
             Site Sourcing, Option Negotiation & Deal Strategy
-          </p>
+          </div>
         </div>
         <div class="team-member">
           <img src="/team/andrew-eggins.jpg" alt="Andrew Eggins" class="team-photo" />
           <h3 class="team-name">Andrew Eggins</h3>
           <p class="team-role">Design Director</p>
-          <p class="team-bio">
-            BArch, AdvDipBus<br>
+          <p class="team-credentials">BArch, AdvDipBus</p>
+          <div class="team-licences">
+            <span class="team-licence-item">Architecture</span>
+            <span class="team-licence-item">Town Planning</span>
+          </div>
+          <div class="team-focus">
+            <p class="team-focus-label">Focus</p>
             Design, DA Management, Town Planning & Consultant Coordination
-          </p>
+          </div>
         </div>
       </div>
     </div>
