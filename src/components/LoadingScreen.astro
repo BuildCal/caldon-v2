@@ -156,24 +156,51 @@
   }
 </style>
 
-<script>
-  const loadingScreen = document.getElementById('loading-screen');
-  
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      if (loadingScreen) {
-        loadingScreen.classList.add('hidden');
+<script is:inline>
+  (function() {
+    function hideLoadingScreen() {
+      try {
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen && !loadingScreen.classList.contains('hidden')) {
+          loadingScreen.classList.add('hidden');
+          return true;
+        }
+      } catch (e) {
+        console.error('Error hiding loading screen:', e);
       }
-    }, 1500);
-  });
-  
-  // Fallback if page loads quickly
-  if (document.readyState === 'complete') {
-    setTimeout(() => {
+      return false;
+    }
+    
+    // Wait for element to exist, then hide
+    function waitAndHide() {
+      const loadingScreen = document.getElementById('loading-screen');
       if (loadingScreen) {
-        loadingScreen.classList.add('hidden');
+        // Page is fully loaded
+        setTimeout(hideLoadingScreen, 1500);
+      } else {
+        // Element doesn't exist yet, try again
+        setTimeout(waitAndHide, 100);
       }
-    }, 500);
-  }
+    }
+    
+    // Start checking once DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        waitAndHide();
+      });
+    } else {
+      waitAndHide();
+    }
+    
+    // Also listen for full page load
+    window.addEventListener('load', function() {
+      setTimeout(hideLoadingScreen, 1500);
+    });
+    
+    // Emergency fallback: always hide after max 3 seconds
+    setTimeout(function() {
+      hideLoadingScreen();
+    }, 3000);
+  })();
 </script>
 
