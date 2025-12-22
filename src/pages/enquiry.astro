@@ -1,5 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Get opportunity from query parameter
+const opportunity = Astro.url.searchParams.get('opportunity') || '';
 ---
 
 <BaseLayout title="Private Enquiry" description="Enquire about partnership opportunities with CALDON.">
@@ -419,6 +422,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <label for="referral">How did you hear about us? <span class="optional">(optional)</span></label>
             <input type="text" id="referral" name="referral" />
           </div>
+
+          {opportunity && (
+            <div class="form-group full-width hidden-field">
+              <label for="opportunity">Opportunity</label>
+              <input type="text" id="opportunity" name="opportunity" value={opportunity} />
+            </div>
+          )}
 
           <button type="submit" class="form-submit">Submit Enquiry</button>
         </form>

@@ -1,0 +1,398 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { supabaseAdmin } from '../../lib/supabase-admin';
+import { supabase } from '../../lib/supabase';
+
+export const prerender = false;
+
+// Check authentication
+const { data: { session } } = await supabase.auth.getSession();
+if (!session) {
+  return Astro.redirect('/admin/login');
+}
+
+// Fetch all opportunities
+let opportunities: any[] = [];
+let error: string | null = null;
+
+try {
+  const { data, error: fetchError } = await supabaseAdmin
+    .from('opportunities')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (fetchError) {
+    error = fetchError.message;
+  } else {
+    opportunities = data || [];
+  }
+} catch (err) {
+  error = err instanceof Error ? err.message : 'Failed to fetch opportunities';
+}
+
+const getStatusColor = (status: string) => {
+  switch (status?.toLowerCase()) {
+    case 'active':
+      return '#10b981'; // green
+    case 'inactive':
+      return '#6b7280'; // gray
+    case 'closed':
+      return '#ef4444'; // red
+    case 'under-review':
+      return '#f59e0b'; // amber
+    default:
+      return '#6b7280';
+  }
+};
+
+const formatDate = (dateString: string) => {
+  if (!dateString) return 'N/A';
+  try {
+    return new Date(dateString).toLocaleDateString('en-AU', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  } catch {
+    return dateString;
+  }
+};
+---
+
+<BaseLayout title="Admin - Opportunities" description="Admin interface for managing investment opportunities.">
+  <style>
+    .admin-container {
+      min-height: 100vh;
+      padding: 120px 24px 80px;
+      background-color: #ffffff;
+    }
+
+    @media (min-width: 768px) {
+      .admin-container {
+        padding: 140px 48px 100px;
+      }
+    }
+
+    .admin-content {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .admin-header {
+      margin-bottom: 40px;
+    }
+
+    .admin-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 300;
+      color: #0a0a0a;
+      margin-bottom: 8px;
+    }
+
+    .admin-subtitle {
+      font-size: 0.9rem;
+      color: #525252;
+      margin-bottom: 24px;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background-color: #0a0a0a;
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background-color: #2a2a2a;
+    }
+
+    .btn-secondary {
+      background-color: #ffffff;
+      color: #0a0a0a;
+      border: 1px solid #e5e5e5;
+    }
+
+    .btn-secondary:hover {
+      border-color: #0a0a0a;
+    }
+
+    .btn-danger {
+      background-color: #ef4444;
+      color: #ffffff;
+    }
+
+    .btn-danger:hover {
+      background-color: #dc2626;
+    }
+
+    .btn-small {
+      padding: 6px 12px;
+      font-size: 0.75rem;
+    }
+
+    .access-denied {
+      text-align: center;
+      padding: 80px 24px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .access-denied-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.75rem;
+      font-weight: 300;
+      color: #0a0a0a;
+      margin-bottom: 16px;
+    }
+
+    .access-denied-text {
+      font-size: 0.95rem;
+      color: #525252;
+      line-height: 1.7;
+    }
+
+    .error-message {
+      padding: 16px;
+      background-color: #fee2e2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      border-radius: 4px;
+      margin-bottom: 24px;
+      font-size: 0.9rem;
+    }
+
+    .admin-table-container {
+      overflow-x: auto;
+      border: 1px solid #e5e5e5;
+      background-color: #ffffff;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .admin-table thead {
+      background-color: #fafafa;
+      border-bottom: 2px solid #e5e5e5;
+    }
+
+    .admin-table th {
+      padding: 16px;
+      text-align: left;
+      font-weight: 500;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #525252;
+    }
+
+    .admin-table td {
+      padding: 16px;
+      border-bottom: 1px solid #f0f0f0;
+      color: #0a0a0a;
+    }
+
+    .admin-table tbody tr:hover {
+      background-color: #fafafa;
+    }
+
+    .admin-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: capitalize;
+      color: #ffffff;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 80px 24px;
+      color: #858585;
+    }
+
+    .empty-state-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: #0a0a0a;
+      margin-bottom: 8px;
+    }
+
+    .title-cell {
+      font-weight: 500;
+      max-width: 300px;
+    }
+
+    .location-cell {
+      color: #525252;
+    }
+
+    .type-cell {
+      text-transform: capitalize;
+    }
+
+    @media (max-width: 768px) {
+      .admin-table {
+        font-size: 0.8rem;
+      }
+
+      .admin-table th,
+      .admin-table td {
+        padding: 12px 8px;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+
+      .title-cell {
+        max-width: 200px;
+      }
+    }
+  </style>
+
+  <section class="admin-container">
+    <div class="admin-content">
+      <>
+          <div class="admin-header">
+            <h1 class="admin-title">Manage Opportunities</h1>
+            <p class="admin-subtitle">View, edit, and delete investment opportunities</p>
+            
+            <div class="admin-actions">
+              <a href="/admin/brochure" class="btn btn-secondary" target="_blank">
+                Generate Brochure
+              </a>
+              <a href="/admin/opportunities/new" class="btn btn-primary">
+                Add New Opportunity
+              </a>
+              <a href="/admin/logout" class="btn btn-secondary">
+                Sign Out
+              </a>
+            </div>
+
+            {error && (
+              <div class="error-message">
+                Error loading opportunities: {error}
+              </div>
+            )}
+          </div>
+
+          {opportunities.length === 0 && !error ? (
+            <div class="empty-state">
+              <h2 class="empty-state-title">No Opportunities</h2>
+              <p>Get started by adding your first opportunity.</p>
+            </div>
+          ) : (
+            <div class="admin-table-container">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Location</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {opportunities.map((opp) => (
+                    <tr>
+                      <td class="title-cell">{opp.title || 'Untitled'}</td>
+                      <td class="location-cell">{opp.location || 'N/A'}</td>
+                      <td class="type-cell">{opp.type || 'N/A'}</td>
+                      <td>
+                        <span 
+                          class="status-badge" 
+                          style={`background-color: ${getStatusColor(opp.status)}`}
+                        >
+                          {opp.status || 'N/A'}
+                        </span>
+                      </td>
+                      <td>{formatDate(opp.created_at)}</td>
+                      <td>
+                        <div class="action-buttons">
+                          <a 
+                            href={`/admin/opportunities/edit/${opp.id}`}
+                            class="btn btn-secondary btn-small"
+                          >
+                            Edit
+                          </a>
+                          <button 
+                            class="btn btn-danger btn-small"
+                            onclick={`if(confirm('Are you sure you want to delete "${opp.title}"? This action cannot be undone.')) { deleteOpportunity('${opp.id}') }`}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  </section>
+
+  <script>
+    async function deleteOpportunity(id: string) {
+      try {
+        const response = await fetch('/api/opportunities/delete', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          window.location.reload();
+        } else {
+          alert('Error deleting opportunity: ' + (data.error || 'Unknown error'));
+        }
+      } catch (error) {
+        alert('Error deleting opportunity. Please try again.');
+        console.error(error);
+      }
+    }
+  </script>
+</BaseLayout>
+

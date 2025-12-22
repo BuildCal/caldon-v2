@@ -1,0 +1,574 @@
+---
+import { supabaseAdmin } from '../../lib/supabase-admin';
+import { supabase } from '../../lib/supabase';
+
+export const prerender = false;
+
+// Check authentication
+const { data: { session } } = await supabase.auth.getSession();
+if (!session) {
+  return Astro.redirect('/admin/login');
+}
+
+// Fetch active opportunities
+const { data: opportunities } = await supabaseAdmin
+  .from('opportunities')
+  .select('*')
+  .eq('status', 'active')
+  .order('created_at', { ascending: false });
+
+// Get current month/year for the issue
+const now = new Date();
+const issueDate = now.toLocaleDateString('en-AU', { month: 'long', year: 'numeric' });
+---
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CALDON Investment Opportunities - {issueDate}</title>
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    /* A4 Print Setup */
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+    
+    html, body {
+      width: 210mm;
+      margin: 0 auto;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: #0a0a0a;
+      background: white;
+      line-height: 1.5;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    
+    /* Page template - each page exactly A4 */
+    .page {
+      width: 210mm;
+      height: 297mm;
+      padding: 12mm;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+      page-break-inside: avoid;
+    }
+    
+    .page:last-child {
+      page-break-after: auto;
+    }
+    
+    /* Cover page */
+    .cover {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%) !important;
+      color: #fafafa;
+      text-align: center;
+      padding: 20mm;
+    }
+    
+    .cover-logo-img {
+      max-width: 60mm;
+      height: auto;
+      margin-bottom: 10mm;
+      filter: invert(1);
+    }
+    
+    .cover-tagline {
+      font-size: 10pt;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #858585;
+      margin-bottom: 20mm;
+    }
+    
+    .cover-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 28pt;
+      font-weight: 300;
+      margin-bottom: 5mm;
+    }
+    
+    .cover-issue {
+      font-size: 12pt;
+      color: #858585;
+      margin-bottom: 15mm;
+    }
+    
+    .cover-count {
+      font-size: 9pt;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid #525252;
+      padding: 3mm 8mm;
+    }
+    
+    /* Introduction page */
+    .intro {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    .intro h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 20pt;
+      font-weight: 400;
+      margin-bottom: 8mm;
+      border-bottom: 0.5pt solid #e5e5e5;
+      padding-bottom: 4mm;
+    }
+    
+    .intro p {
+      font-size: 11pt;
+      color: #525252;
+      margin-bottom: 6mm;
+      max-width: 140mm;
+      line-height: 1.7;
+    }
+    
+    .principal-signature {
+      margin-top: 8mm;
+    }
+    
+    .principal-name {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 13pt;
+      font-weight: 500;
+      color: #0a0a0a;
+      margin-bottom: 1mm;
+    }
+    
+    .principal-details {
+      font-size: 9pt;
+      color: #525252;
+      margin: 0;
+    }
+    
+    .intro-contact {
+      margin-top: 12mm;
+      padding: 6mm;
+      background: #fafafa;
+      border-left: 2pt solid #0a0a0a;
+    }
+    
+    .intro-contact p {
+      margin-bottom: 2mm;
+      font-size: 10pt;
+    }
+    
+    /* Opportunity pages */
+    .opportunity {
+      display: flex;
+      flex-direction: column;
+      height: calc(297mm - 24mm); /* A4 height minus padding (12mm x 2) */
+    }
+    
+    .opportunity-content {
+      flex: 1;
+      overflow: hidden;
+    }
+    
+    .opportunity-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 5mm;
+      padding-bottom: 4mm;
+      border-bottom: 0.5pt solid #e5e5e5;
+    }
+    
+    .opportunity-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 18pt;
+      font-weight: 400;
+      margin-bottom: 2mm;
+    }
+    
+    .opportunity-location {
+      font-size: 10pt;
+      color: #525252;
+    }
+    
+    .opportunity-type {
+      background: #0a0a0a;
+      color: #fafafa;
+      padding: 2mm 4mm;
+      font-size: 7pt;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    
+    .opportunity-image {
+      width: 100%;
+      height: 50mm;
+      object-fit: cover;
+      margin-bottom: 4mm;
+      border: 0.5pt solid #e5e5e5;
+    }
+    
+    .opportunity-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3mm;
+      margin-bottom: 4mm;
+      padding: 3mm;
+      background: #fafafa;
+    }
+    
+    .metric {
+      text-align: center;
+    }
+    
+    .metric-label {
+      font-size: 6pt;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #858585;
+      margin-bottom: 1mm;
+    }
+    
+    .metric-value {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 11pt;
+      font-weight: 500;
+    }
+    
+    .opportunity-details {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5mm 5mm;
+      margin-bottom: 4mm;
+      font-size: 8pt;
+    }
+    
+    .detail-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 1mm 0;
+      border-bottom: 0.5pt solid #f0f0f0;
+    }
+    
+    .detail-label {
+      color: #858585;
+    }
+    
+    .detail-value {
+      font-weight: 500;
+      text-align: right;
+    }
+    
+    .opportunity-summary {
+      font-size: 9pt;
+      color: #525252;
+      margin-bottom: 3mm;
+      font-style: italic;
+      line-height: 1.4;
+    }
+    
+    .opportunity-description {
+      font-size: 8pt;
+      color: #0a0a0a;
+      line-height: 1.5;
+      flex: 1;
+    }
+    
+    .opportunity-footer {
+      margin-top: auto;
+      padding-top: 3mm;
+      border-top: 0.5pt solid #e5e5e5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 7pt;
+      color: #525252;
+    }
+    
+    .opportunity-footer-cta {
+      flex: 1;
+    }
+    
+    .opportunity-footer-page {
+      text-align: right;
+      white-space: nowrap;
+    }
+    
+    /* Back cover */
+    .back-cover {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #0a0a0a !important;
+      color: #fafafa;
+      text-align: center;
+    }
+    
+    .back-cover-logo-img {
+      max-width: 50mm;
+      height: auto;
+      margin-bottom: 10mm;
+      filter: invert(1);
+    }
+    
+    .back-cover p {
+      font-size: 10pt;
+      color: #858585;
+      margin-bottom: 2mm;
+    }
+    
+    .back-cover a {
+      color: #fafafa;
+      text-decoration: none;
+    }
+    
+    .disclaimer {
+      margin-top: 20mm;
+      font-size: 7pt;
+      color: #525252;
+      max-width: 140mm;
+      line-height: 1.6;
+    }
+    
+    /* Print controls - hidden when printing */
+    .print-controls {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 10px;
+      z-index: 1000;
+      background: white;
+      padding: 10px;
+      border-radius: 4px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .print-controls button,
+    .print-controls a {
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+    
+    .btn-print {
+      background: #0a0a0a;
+      color: #fafafa;
+    }
+    
+    .btn-back {
+      background: #fafafa;
+      color: #0a0a0a;
+      border: 1px solid #e5e5e5;
+    }
+    
+    @media print {
+      .print-controls {
+        display: none !important;
+      }
+      
+      html, body {
+        width: 210mm;
+        height: 297mm;
+      }
+      
+      .page {
+        margin: 0;
+        border: none;
+        box-shadow: none;
+      }
+      
+      .cover, .back-cover {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
+    
+    /* Screen preview - show page boundaries */
+    @media screen {
+      body {
+        background: #e5e5e5;
+        padding: 20px 0;
+      }
+      
+      .page {
+        margin: 0 auto 20px auto;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+      
+      .page:not(.cover):not(.back-cover) {
+        background: white;
+      }
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Print controls -->
+  <div class="print-controls">
+    <a href="/admin/opportunities" class="btn-back">← Back to Admin</a>
+    <button class="btn-print" onclick="window.print()">Download as PDF</button>
+  </div>
+
+  <!-- Cover page -->
+  <div class="page cover">
+    <img src="/logo.png" alt="CALDON" class="cover-logo-img" />
+    <div class="cover-tagline">Property Development & Investment</div>
+    <h1 class="cover-title">Investment Opportunities</h1>
+    <p class="cover-issue">{issueDate} Edition</p>
+    <div class="cover-count">{opportunities?.length || 0} Active Opportunities</div>
+  </div>
+  
+  <!-- Introduction page -->
+  <div class="page intro">
+    <h2>From the Principal</h2>
+    <p>
+      Thank you for your continued interest in CALDON's development opportunities. 
+      This month's portfolio features carefully selected projects across NSW, 
+      each offering compelling returns for qualified investors.
+    </p>
+    <p>
+      Our team conducts thorough due diligence on every opportunity, ensuring 
+      alignment with our core principles of quality, transparency, and sustainable returns.
+    </p>
+    <p>
+      I invite you to review the opportunities within and contact our team to 
+      discuss how we might work together.
+    </p>
+    
+    <div class="principal-signature">
+      <p class="principal-name">Bradley Caldon</p>
+      <p class="principal-details">Principal · BConstMgt(Bldg)(Hons)</p>
+    </div>
+    
+    <div class="intro-contact">
+      <p><strong>To register your interest:</strong></p>
+      <p>Email: invest@caldon.com.au</p>
+      <p>Web: www.caldon.com.au/enquiry</p>
+    </div>
+  </div>
+  
+  <!-- Opportunity pages -->
+  {opportunities && opportunities.map((opp, index) => (
+    <div class="page opportunity">
+      <div class="opportunity-content">
+        <div class="opportunity-header">
+          <div>
+            <h2 class="opportunity-title">{opp.title}</h2>
+            <p class="opportunity-location">{opp.location}</p>
+          </div>
+          <span class="opportunity-type">{opp.type}</span>
+        </div>
+        
+        {opp.image_url && (
+          <img src={opp.image_url} alt={opp.title} class="opportunity-image" />
+        )}
+        
+        <div class="opportunity-metrics">
+          <div class="metric">
+            <p class="metric-label">Capital Required</p>
+            <p class="metric-value">{opp.capital_required || 'TBC'}</p>
+          </div>
+          <div class="metric">
+            <p class="metric-label">Target Return</p>
+            <p class="metric-value">{opp.target_return || 'TBC'}</p>
+          </div>
+          <div class="metric">
+            <p class="metric-label">Timeline</p>
+            <p class="metric-value">{opp.timeline || 'TBC'}</p>
+          </div>
+        </div>
+        
+        <div class="opportunity-details">
+          {opp.land_size && (
+            <div class="detail-item">
+              <span class="detail-label">Land Size</span>
+              <span class="detail-value">{opp.land_size}</span>
+            </div>
+          )}
+          {opp.zoning && (
+            <div class="detail-item">
+              <span class="detail-label">Zoning</span>
+              <span class="detail-value">{opp.zoning}</span>
+            </div>
+          )}
+          {opp.lot_count && (
+            <div class="detail-item">
+              <span class="detail-label">Lots/Units</span>
+              <span class="detail-value">{opp.lot_count}</span>
+            </div>
+          )}
+          {opp.da_status && (
+            <div class="detail-item">
+              <span class="detail-label">DA Status</span>
+              <span class="detail-value">{opp.da_status}</span>
+            </div>
+          )}
+          {opp.investment_structure && (
+            <div class="detail-item">
+              <span class="detail-label">Structure</span>
+              <span class="detail-value">{opp.investment_structure}</span>
+            </div>
+          )}
+          {opp.minimum_investment && (
+            <div class="detail-item">
+              <span class="detail-label">Min. Investment</span>
+              <span class="detail-value">{opp.minimum_investment}</span>
+            </div>
+          )}
+        </div>
+        
+        {opp.summary && (
+          <p class="opportunity-summary">{opp.summary}</p>
+        )}
+        
+        {opp.description && (
+          <div class="opportunity-description">{opp.description}</div>
+        )}
+      </div>
+      
+      <div class="opportunity-footer">
+        <span class="opportunity-footer-cta">To express interest: invest@caldon.com.au | www.caldon.com.au/enquiry</span>
+        <span class="opportunity-footer-page">CALDON™ · {issueDate} · Page {index + 3}</span>
+      </div>
+    </div>
+  ))}
+  
+  <!-- Back cover -->
+  <div class="page back-cover">
+    <img src="/logo.png" alt="CALDON" class="back-cover-logo-img" />
+    <p>Property Development & Investment</p>
+    <p>&nbsp;</p>
+    <p>www.caldon.com.au</p>
+    <p>invest@caldon.com.au</p>
+    <p class="disclaimer">
+      This document is for information purposes only and does not constitute financial advice. 
+      All investments carry risk. Past performance is not indicative of future results. 
+      Prospective investors should seek independent financial advice before making investment decisions.
+      © CALDON {new Date().getFullYear()}. All rights reserved.
+    </p>
+  </div>
+</body>
+</html>
+

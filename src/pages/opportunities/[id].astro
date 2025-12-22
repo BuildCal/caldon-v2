@@ -1,0 +1,861 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { supabase } from '../../lib/supabase';
+
+export async function getStaticPaths() {
+  try {
+    const { data: opportunities, error } = await supabase
+      .from('opportunities')
+      .select('id')
+      .eq('status', 'active');
+
+    if (error) {
+      console.error('Error fetching opportunities:', error);
+      return [];
+    }
+
+    return (opportunities || []).map((opportunity) => ({
+      params: { id: opportunity.id },
+    }));
+  } catch (err) {
+    console.error('Error in getStaticPaths:', err);
+    return [];
+  }
+}
+
+const { id } = Astro.params;
+
+// Fetch the specific opportunity
+let opportunity: any = null;
+let error: string | null = null;
+
+try {
+  const { data, error: fetchError } = await supabase
+    .from('opportunities')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (fetchError) {
+    error = fetchError.message;
+  } else {
+    opportunity = data;
+  }
+} catch (err) {
+  error = err instanceof Error ? err.message : 'Failed to fetch opportunity';
+}
+
+// If opportunity not found, return 404
+if (!opportunity && !error) {
+  return Astro.redirect('/404');
+}
+
+const enquiryUrl = `/enquiry${opportunity ? `?opportunity=${encodeURIComponent(opportunity.title)}` : ''}`;
+---
+
+<BaseLayout 
+  title={opportunity ? opportunity.title : 'Opportunity Not Found'} 
+  description={opportunity ? opportunity.summary || `Investment opportunity: ${opportunity.title}` : 'Opportunity not found'}
+>
+  <style>
+    .page-header {
+      padding: 180px 0 60px;
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      .page-header {
+        padding: 200px 0 80px;
+      }
+    }
+
+    .page-label {
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #858585;
+      margin-bottom: 20px;
+    }
+
+    .page-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 300;
+      letter-spacing: 0.01em;
+      margin-bottom: 24px;
+      line-height: 1.15;
+      color: #0a0a0a;
+    }
+
+    .opportunity-hero {
+      margin-top: 72px;
+      width: 100%;
+      max-height: 400px;
+      position: relative;
+      overflow: hidden;
+      background-color: #f5f5f5;
+    }
+
+    .opportunity-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .opportunity-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%);
+    }
+
+    .opportunity-hero-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 48px 24px;
+      color: white;
+    }
+
+    @media (min-width: 768px) {
+      .opportunity-hero-content {
+        padding: 64px 48px;
+      }
+    }
+
+    .opportunity-hero-type {
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.9;
+      margin-bottom: 12px;
+    }
+
+    .opportunity-hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 300;
+      letter-spacing: 0.01em;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .opportunity-hero-location {
+      font-size: 0.9rem;
+      opacity: 0.95;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .opportunity-content {
+      padding: 80px 0;
+    }
+
+    @media (min-width: 768px) {
+      .opportunity-content {
+        padding: 120px 0;
+      }
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #858585;
+      margin-bottom: 48px;
+      transition: color 0.3s ease;
+    }
+
+    .back-link:hover {
+      color: #0a0a0a;
+    }
+
+    .back-link svg {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.3s ease;
+    }
+
+    .back-link:hover svg {
+      transform: translateX(-4px);
+    }
+
+    .opportunity-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 64px;
+    }
+
+    @media (min-width: 992px) {
+      .opportunity-grid {
+        grid-template-columns: 1fr 320px;
+        gap: 80px;
+      }
+    }
+
+    .opportunity-main h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.75rem;
+      font-weight: 400;
+      margin-bottom: 24px;
+      color: #0a0a0a;
+    }
+
+    .opportunity-main :global(p) {
+      font-size: 1rem;
+      color: #525252;
+      line-height: 1.9;
+      margin-bottom: 24px;
+    }
+
+    .opportunity-main :global(p:last-child) {
+      margin-bottom: 0;
+    }
+
+    .opportunity-sidebar {
+      position: sticky;
+      top: 120px;
+      height: fit-content;
+    }
+
+    @media (max-width: 991px) {
+      .opportunity-sidebar {
+        position: static;
+      }
+    }
+
+    .details-card {
+      border: 1px solid #e5e5e5;
+      padding: 32px;
+      background-color: #ffffff;
+    }
+
+    .details-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e5e5e5;
+      color: #0a0a0a;
+    }
+
+    .detail-item {
+      margin-bottom: 20px;
+    }
+
+    .detail-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .detail-label {
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #858585;
+      margin-bottom: 4px;
+    }
+
+    .detail-value {
+      font-size: 0.95rem;
+      color: #0a0a0a;
+      line-height: 1.6;
+    }
+
+    .register-btn {
+      display: block;
+      width: 100%;
+      padding: 16px 24px;
+      margin-top: 32px;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-align: center;
+      color: #ffffff;
+      background-color: #0a0a0a;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .register-btn:hover {
+      background-color: #2a2a2a;
+    }
+
+    .error-state {
+      text-align: center;
+      padding: 120px 24px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .error-state-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.75rem;
+      font-weight: 300;
+      color: #0a0a0a;
+      margin-bottom: 16px;
+    }
+
+    .error-state-text {
+      font-size: 1rem;
+      color: #525252;
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+
+    .error-state-link {
+      display: inline-block;
+      padding: 16px 40px;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #ffffff;
+      background-color: #0a0a0a;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .error-state-link:hover {
+      background-color: #2a2a2a;
+    }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        padding: 0 48px;
+      }
+    }
+
+    /* Info Sections */
+    .info-section {
+      margin-top: 64px;
+    }
+
+    .info-section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.75rem;
+      font-weight: 400;
+      margin-bottom: 24px;
+      color: #0a0a0a;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    @media (min-width: 768px) {
+      .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .info-item {
+      padding-bottom: 20px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .info-item:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #858585;
+      margin-bottom: 8px;
+    }
+
+    .info-value {
+      font-size: 1rem;
+      color: #0a0a0a;
+      line-height: 1.6;
+    }
+
+    /* Video Section */
+    .video-section {
+      margin-top: 64px;
+    }
+
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      border: 1px solid #e5e5e5;
+    }
+
+    .video-embed {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .video-link {
+      display: inline-block;
+      padding: 16px 32px;
+      background-color: #0a0a0a;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: background-color 0.3s ease;
+    }
+
+    .video-link:hover {
+      background-color: #2a2a2a;
+    }
+
+    /* Risks Content */
+    .risks-content {
+      font-size: 1rem;
+      color: #525252;
+      line-height: 1.9;
+    }
+
+    .risks-content p {
+      margin-bottom: 16px;
+    }
+
+    .risks-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Documents List */
+    .documents-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .document-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border: 1px solid #e5e5e5;
+      color: #0a0a0a;
+      text-decoration: none;
+      transition: border-color 0.3s ease, background-color 0.3s ease;
+    }
+
+    .document-link:hover {
+      border-color: #0a0a0a;
+      background-color: #fafafa;
+    }
+
+    .document-link svg {
+      flex-shrink: 0;
+      margin-left: 12px;
+    }
+  </style>
+
+  {error || !opportunity ? (
+    <section class="opportunity-content">
+      <div class="container">
+        <div class="error-state">
+          <h1 class="error-state-title">Opportunity Not Found</h1>
+          <p class="error-state-text">
+            {error || 'The opportunity you are looking for does not exist or is no longer available.'}
+          </p>
+          <a href="/opportunities" class="error-state-link">Back to Opportunities</a>
+        </div>
+      </div>
+    </section>
+  ) : (
+    <>
+      {opportunity.image_url ? (
+        <section class="opportunity-hero">
+          <img src={opportunity.image_url} alt={opportunity.title} />
+          <div class="opportunity-hero-overlay"></div>
+          <div class="opportunity-hero-content">
+            <div class="container">
+              <p class="opportunity-hero-type">{opportunity.type}</p>
+              <h1 class="opportunity-hero-title">{opportunity.title}</h1>
+              <p class="opportunity-hero-location">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                {opportunity.location}
+              </p>
+            </div>
+          </div>
+        </section>
+      ) : (
+        <section class="page-header">
+          <div class="container">
+            <p class="page-label">{opportunity.type}</p>
+            <h1 class="page-title">{opportunity.title}</h1>
+            <p class="page-description">{opportunity.location}</p>
+          </div>
+        </section>
+      )}
+
+      <section class="opportunity-content">
+        <div class="container">
+          <a href="/opportunities" class="back-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to Opportunities
+          </a>
+          
+          <div class="opportunity-grid">
+            <div class="opportunity-main">
+              <h2>Overview</h2>
+              {opportunity.description ? (
+                <div>
+                  {opportunity.description.split('\n').filter((p: string) => p.trim()).map((paragraph: string) => (
+                    <p>{paragraph.trim()}</p>
+                  ))}
+                </div>
+              ) : opportunity.summary ? (
+                <p>{opportunity.summary}</p>
+              ) : (
+                <p>No description available for this opportunity.</p>
+              )}
+
+              {/* Video Embed */}
+              {opportunity.video_url && (
+                <div class="video-section">
+                  <h2>Video</h2>
+                  <div class="video-wrapper">
+                    {opportunity.video_url.includes('youtube.com') || opportunity.video_url.includes('youtu.be') ? (
+                      <iframe 
+                        src={opportunity.video_url.includes('youtube.com/watch') 
+                          ? opportunity.video_url.replace('watch?v=', 'embed/').split('&')[0]
+                          : opportunity.video_url.replace('youtu.be/', 'youtube.com/embed/')}
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen
+                        class="video-embed"
+                      ></iframe>
+                    ) : opportunity.video_url.includes('vimeo.com') ? (
+                      <iframe 
+                        src={opportunity.video_url.replace('vimeo.com/', 'player.vimeo.com/video/')}
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture" 
+                        allowfullscreen
+                        class="video-embed"
+                      ></iframe>
+                    ) : (
+                      <a href={opportunity.video_url} target="_blank" rel="noopener noreferrer" class="video-link">Watch Video</a>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Property Details Section */}
+              {(opportunity.land_size || opportunity.zoning || opportunity.council || opportunity.lot_count || opportunity.bedrooms || opportunity.property_type) && (
+                <div class="info-section">
+                  <h2>Property Details</h2>
+                  <div class="info-grid">
+                    {opportunity.land_size && (
+                      <div class="info-item">
+                        <p class="info-label">Land Size</p>
+                        <p class="info-value">{opportunity.land_size}</p>
+                      </div>
+                    )}
+                    {opportunity.zoning && (
+                      <div class="info-item">
+                        <p class="info-label">Zoning</p>
+                        <p class="info-value">{opportunity.zoning}</p>
+                      </div>
+                    )}
+                    {opportunity.council && (
+                      <div class="info-item">
+                        <p class="info-label">Council</p>
+                        <p class="info-value">{opportunity.council}</p>
+                      </div>
+                    )}
+                    {opportunity.lot_count && (
+                      <div class="info-item">
+                        <p class="info-label">Number of Lots/Units</p>
+                        <p class="info-value">{opportunity.lot_count}</p>
+                      </div>
+                    )}
+                    {opportunity.bedrooms && (
+                      <div class="info-item">
+                        <p class="info-label">Bedrooms</p>
+                        <p class="info-value">{opportunity.bedrooms}</p>
+                      </div>
+                    )}
+                    {opportunity.property_type && (
+                      <div class="info-item">
+                        <p class="info-label">Property Type</p>
+                        <p class="info-value">{opportunity.property_type}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Financial Overview Section */}
+              {(opportunity.capital_required || opportunity.minimum_investment || opportunity.total_project_value || opportunity.equity_required || opportunity.target_return || opportunity.profit_share || opportunity.debt_funding || opportunity.distribution_frequency) && (
+                <div class="info-section">
+                  <h2>Financial Overview</h2>
+                  <div class="info-grid">
+                    {opportunity.capital_required && (
+                      <div class="info-item">
+                        <p class="info-label">Total Capital Required</p>
+                        <p class="info-value">{opportunity.capital_required}</p>
+                      </div>
+                    )}
+                    {opportunity.minimum_investment && (
+                      <div class="info-item">
+                        <p class="info-label">Minimum Investment</p>
+                        <p class="info-value">{opportunity.minimum_investment}</p>
+                      </div>
+                    )}
+                    {opportunity.total_project_value && (
+                      <div class="info-item">
+                        <p class="info-label">Total Project Value</p>
+                        <p class="info-value">{opportunity.total_project_value}</p>
+                      </div>
+                    )}
+                    {opportunity.equity_required && (
+                      <div class="info-item">
+                        <p class="info-label">Equity Required</p>
+                        <p class="info-value">{opportunity.equity_required}</p>
+                      </div>
+                    )}
+                    {opportunity.target_return && (
+                      <div class="info-item">
+                        <p class="info-label">Target Return</p>
+                        <p class="info-value">{opportunity.target_return}</p>
+                      </div>
+                    )}
+                    {opportunity.profit_share && (
+                      <div class="info-item">
+                        <p class="info-label">Profit Share Structure</p>
+                        <p class="info-value">{opportunity.profit_share}</p>
+                      </div>
+                    )}
+                    {opportunity.debt_funding && (
+                      <div class="info-item">
+                        <p class="info-label">Debt Funding</p>
+                        <p class="info-value">{opportunity.debt_funding}</p>
+                      </div>
+                    )}
+                    {opportunity.distribution_frequency && (
+                      <div class="info-item">
+                        <p class="info-label">Distribution Frequency</p>
+                        <p class="info-value">{opportunity.distribution_frequency}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Timeline Section */}
+              {(opportunity.timeline || opportunity.da_status || opportunity.da_approval_date || opportunity.construction_start || opportunity.expected_completion) && (
+                <div class="info-section">
+                  <h2>Timeline & Approvals</h2>
+                  <div class="info-grid">
+                    {opportunity.timeline && (
+                      <div class="info-item">
+                        <p class="info-label">Overall Timeline</p>
+                        <p class="info-value">{opportunity.timeline}</p>
+                      </div>
+                    )}
+                    {opportunity.da_status && (
+                      <div class="info-item">
+                        <p class="info-label">DA Status</p>
+                        <p class="info-value">{opportunity.da_status}</p>
+                      </div>
+                    )}
+                    {opportunity.da_approval_date && (
+                      <div class="info-item">
+                        <p class="info-label">DA Approval Date</p>
+                        <p class="info-value">{new Date(opportunity.da_approval_date).toLocaleDateString('en-AU', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                      </div>
+                    )}
+                    {opportunity.construction_start && (
+                      <div class="info-item">
+                        <p class="info-label">Construction Start</p>
+                        <p class="info-value">{opportunity.construction_start}</p>
+                      </div>
+                    )}
+                    {opportunity.expected_completion && (
+                      <div class="info-item">
+                        <p class="info-label">Expected Completion</p>
+                        <p class="info-value">{opportunity.expected_completion}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Investment Structure Section */}
+              {(opportunity.investment_structure || opportunity.risk_level || opportunity.investor_slots_total !== null || opportunity.investor_slots_remaining !== null) && (
+                <div class="info-section">
+                  <h2>Investment Structure</h2>
+                  <div class="info-grid">
+                    {opportunity.investment_structure && (
+                      <div class="info-item">
+                        <p class="info-label">Structure Type</p>
+                        <p class="info-value">{opportunity.investment_structure}</p>
+                      </div>
+                    )}
+                    {opportunity.risk_level && (
+                      <div class="info-item">
+                        <p class="info-label">Risk Level</p>
+                        <p class="info-value">{opportunity.risk_level}</p>
+                      </div>
+                    )}
+                    {opportunity.investor_slots_total !== null && (
+                      <div class="info-item">
+                        <p class="info-label">Total Investor Slots</p>
+                        <p class="info-value">{opportunity.investor_slots_total}</p>
+                      </div>
+                    )}
+                    {opportunity.investor_slots_remaining !== null && (
+                      <div class="info-item">
+                        <p class="info-label">Slots Remaining</p>
+                        <p class="info-value">{opportunity.investor_slots_remaining}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Risk Factors Section */}
+              {opportunity.key_risks && (
+                <div class="info-section">
+                  <h2>Key Risks</h2>
+                  <div class="risks-content">
+                    {opportunity.key_risks.split('\n').filter((p: string) => p.trim()).map((paragraph: string) => (
+                      <p>{paragraph.trim()}</p>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Documents Section */}
+              {(opportunity.pds_url || opportunity.feasibility_url || opportunity.info_memorandum_url) && (
+                <div class="info-section">
+                  <h2>Documents</h2>
+                  <div class="documents-list">
+                    {opportunity.pds_url && (
+                      <a href={opportunity.pds_url} target="_blank" rel="noopener noreferrer" class="document-link">
+                        Product Disclosure Statement
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                          <polyline points="15 3 21 3 21 9"></polyline>
+                          <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                      </a>
+                    )}
+                    {opportunity.feasibility_url && (
+                      <a href={opportunity.feasibility_url} target="_blank" rel="noopener noreferrer" class="document-link">
+                        Feasibility Study
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                          <polyline points="15 3 21 3 21 9"></polyline>
+                          <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                      </a>
+                    )}
+                    {opportunity.info_memorandum_url && (
+                      <a href={opportunity.info_memorandum_url} target="_blank" rel="noopener noreferrer" class="document-link">
+                        Information Memorandum
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                          <polyline points="15 3 21 3 21 9"></polyline>
+                          <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            <aside class="opportunity-sidebar">
+              <div class="details-card">
+                <h3 class="details-card-title">Quick Details</h3>
+                
+                {opportunity.location && (
+                  <div class="detail-item">
+                    <p class="detail-label">Location</p>
+                    <p class="detail-value">{opportunity.location}</p>
+                  </div>
+                )}
+                
+                {opportunity.type && (
+                  <div class="detail-item">
+                    <p class="detail-label">Type</p>
+                    <p class="detail-value">{opportunity.type}</p>
+                  </div>
+                )}
+                
+                {opportunity.da_status && (
+                  <div class="detail-item">
+                    <p class="detail-label">DA Status</p>
+                    <p class="detail-value">{opportunity.da_status}</p>
+                  </div>
+                )}
+                
+                {opportunity.capital_required && (
+                  <div class="detail-item">
+                    <p class="detail-label">Capital Required</p>
+                    <p class="detail-value">{opportunity.capital_required}</p>
+                  </div>
+                )}
+                
+                {opportunity.target_return && (
+                  <div class="detail-item">
+                    <p class="detail-label">Target Return</p>
+                    <p class="detail-value">{opportunity.target_return}</p>
+                  </div>
+                )}
+                
+                {opportunity.timeline && (
+                  <div class="detail-item">
+                    <p class="detail-label">Timeline</p>
+                    <p class="detail-value">{opportunity.timeline}</p>
+                  </div>
+                )}
+
+                {opportunity.investor_slots_total !== null && opportunity.investor_slots_remaining !== null && (
+                  <div class="detail-item">
+                    <p class="detail-label">Investor Slots</p>
+                    <p class="detail-value">{opportunity.investor_slots_remaining} of {opportunity.investor_slots_total} remaining</p>
+                  </div>
+                )}
+                
+                <a href={enquiryUrl} class="register-btn">Register Interest</a>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+    </>
+  )}
+</BaseLayout>
+

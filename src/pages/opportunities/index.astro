@@ -1,0 +1,474 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { supabase } from '../../lib/supabase';
+
+// Fetch active opportunities from Supabase
+let opportunities: any[] = [];
+let error: string | null = null;
+
+try {
+  const { data, error: fetchError } = await supabase
+    .from('opportunities')
+    .select('*')
+    .eq('status', 'active')
+    .order('featured', { ascending: false })
+    .order('sort_order', { ascending: true })
+    .order('created_at', { ascending: false });
+
+  if (fetchError) {
+    error = fetchError.message;
+  } else {
+    opportunities = data || [];
+  }
+} catch (err) {
+  error = err instanceof Error ? err.message : 'Failed to fetch opportunities';
+}
+---
+
+<BaseLayout title="Opportunities" description="Current investment opportunities available through CALDON.">
+  <style>
+    .page-header {
+      padding: 180px 0 80px;
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      .page-header {
+        padding: 200px 0 100px;
+      }
+    }
+
+    .page-label {
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #858585;
+      margin-bottom: 20px;
+    }
+
+    .page-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 300;
+      letter-spacing: 0.01em;
+      margin-bottom: 24px;
+      line-height: 1.15;
+      color: #0a0a0a;
+    }
+
+    .page-description {
+      font-size: 1rem;
+      color: #525252;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    @media (min-width: 768px) {
+      .page-description {
+        font-size: 1.05rem;
+      }
+    }
+
+    .opportunities-section {
+      padding: 0 0 120px;
+    }
+
+    @media (min-width: 768px) {
+      .opportunities-section {
+        padding: 0 0 160px;
+      }
+    }
+
+    .opportunities-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    @media (min-width: 768px) {
+      .opportunities-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+      }
+    }
+
+    @media (min-width: 992px) {
+      .opportunities-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .opportunity-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      padding: 32px;
+      background-color: #ffffff;
+      border: 1px solid #e5e5e5;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .opportunity-card:hover {
+      border-color: #c0c0c0;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+    }
+
+    .opportunity-image {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background-color: #f5f5f5;
+      margin-bottom: 24px;
+      border-radius: 4px;
+    }
+
+    .opportunity-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .opportunity-card:hover .opportunity-image img {
+      transform: scale(1.03);
+    }
+
+    .opportunity-type {
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #858585;
+      margin-bottom: 8px;
+    }
+
+    .opportunity-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 2px;
+    }
+
+    .badge-featured {
+      background-color: #0a0a0a;
+      color: #ffffff;
+    }
+
+    .badge-da {
+      background-color: #fafafa;
+      color: #0a0a0a;
+      border: 1px solid #e5e5e5;
+    }
+
+    .badge-slots {
+      background-color: #f5f5f5;
+      color: #525252;
+    }
+
+    .opportunity-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 12px;
+      line-height: 1.25;
+      color: #0a0a0a;
+      transition: color 0.3s ease;
+    }
+
+    @media (min-width: 768px) {
+      .opportunity-title {
+        font-size: 1.75rem;
+      }
+    }
+
+    .opportunity-card:hover .opportunity-title {
+      color: #525252;
+    }
+
+    .opportunity-location {
+      font-size: 0.85rem;
+      color: #525252;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .opportunity-details {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .opportunity-detail-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .opportunity-detail-label {
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #858585;
+      flex-shrink: 0;
+    }
+
+    .opportunity-detail-value {
+      font-size: 0.9rem;
+      color: #0a0a0a;
+      text-align: right;
+      font-weight: 500;
+    }
+
+    .opportunity-summary {
+      font-size: 0.9rem;
+      color: #525252;
+      line-height: 1.7;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 120px 24px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .empty-state-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.75rem;
+      font-weight: 300;
+      color: #0a0a0a;
+      margin-bottom: 16px;
+    }
+
+    .empty-state-text {
+      font-size: 1rem;
+      color: #525252;
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+
+    .error-state {
+      text-align: center;
+      padding: 120px 24px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .error-state-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.75rem;
+      font-weight: 300;
+      color: #0a0a0a;
+      margin-bottom: 16px;
+    }
+
+    .error-state-text {
+      font-size: 1rem;
+      color: #525252;
+      line-height: 1.8;
+    }
+
+    .cta-section {
+      padding: 80px 0;
+      background-color: #fafafa;
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      .cta-section {
+        padding: 100px 0;
+      }
+    }
+
+    .cta-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 300;
+      color: #0a0a0a;
+      margin-bottom: 16px;
+    }
+
+    .cta-text {
+      font-size: 0.95rem;
+      color: #525252;
+      margin-bottom: 32px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 16px 40px;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #ffffff;
+      background-color: #0a0a0a;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .cta-button:hover {
+      background-color: #2a2a2a;
+    }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        padding: 0 48px;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-up {
+      opacity: 0;
+      animation: fadeUp 0.8s ease-out forwards;
+    }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+  </style>
+
+  <section class="page-header">
+    <div class="container">
+      <p class="page-label fade-up">Investment Opportunities</p>
+      <h1 class="page-title fade-up delay-1">Current Opportunities</h1>
+      <p class="page-description fade-up delay-2">
+        Active investment opportunities available for qualified partners.
+      </p>
+    </div>
+  </section>
+
+  <section class="opportunities-section">
+    <div class="container">
+      {error ? (
+        <div class="error-state">
+          <h2 class="error-state-title">Unable to Load Opportunities</h2>
+          <p class="error-state-text">{error}</p>
+        </div>
+      ) : opportunities.length === 0 ? (
+        <div class="empty-state">
+          <h2 class="empty-state-title">No Current Opportunities</h2>
+          <p class="empty-state-text">
+            No current opportunities. Register your interest to be notified of new deals.
+          </p>
+        </div>
+      ) : (
+        <div class="opportunities-grid">
+          {opportunities.map((opportunity, i) => (
+            <a href={`/opportunities/${opportunity.id}`} class="opportunity-card fade-up" style={`animation-delay: ${i * 0.1}s`}>
+              {opportunity.image_url && (
+                <div class="opportunity-image">
+                  <img 
+                    src={opportunity.image_url} 
+                    alt={opportunity.title} 
+                    loading={i < 6 ? 'eager' : 'lazy'} 
+                  />
+                </div>
+              )}
+              <div class="opportunity-badges">
+                {opportunity.featured && (
+                  <span class="badge badge-featured">Featured</span>
+                )}
+                {opportunity.da_status && (
+                  <span class="badge badge-da">DA: {opportunity.da_status}</span>
+                )}
+                {opportunity.investor_slots_total !== null && opportunity.investor_slots_remaining !== null && (
+                  <span class="badge badge-slots">
+                    {opportunity.investor_slots_remaining} of {opportunity.investor_slots_total} slots
+                  </span>
+                )}
+              </div>
+              <p class="opportunity-type">{opportunity.type}</p>
+              <h2 class="opportunity-title">{opportunity.title}</h2>
+              <p class="opportunity-location">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                {opportunity.location}
+              </p>
+              <div class="opportunity-details">
+                {opportunity.capital_required && (
+                  <div class="opportunity-detail-item">
+                    <span class="opportunity-detail-label">Capital Required</span>
+                    <span class="opportunity-detail-value">{opportunity.capital_required}</span>
+                  </div>
+                )}
+                {opportunity.target_return && (
+                  <div class="opportunity-detail-item">
+                    <span class="opportunity-detail-label">Target Return</span>
+                    <span class="opportunity-detail-value">{opportunity.target_return}</span>
+                  </div>
+                )}
+                {opportunity.timeline && (
+                  <div class="opportunity-detail-item">
+                    <span class="opportunity-detail-label">Timeline</span>
+                    <span class="opportunity-detail-value">{opportunity.timeline}</span>
+                  </div>
+                )}
+              </div>
+              {opportunity.summary && (
+                <p class="opportunity-summary">{opportunity.summary}</p>
+              )}
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <h2 class="cta-title">Register Your Interest</h2>
+      <p class="cta-text">
+        Interested in learning more about our investment opportunities? Get in touch for a confidential consultation.
+      </p>
+      <a href="/enquiry" class="cta-button">Get in Touch</a>
+    </div>
+  </section>
+</BaseLayout>
+

@@ -1,0 +1,765 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { supabaseAdmin } from '../../../lib/supabase-admin';
+import { supabase } from '../../../lib/supabase';
+
+export const prerender = false;
+
+// Check authentication
+const { data: { session } } = await supabase.auth.getSession();
+if (!session) {
+  return Astro.redirect('/admin/login');
+}
+
+let error: string | null = null;
+let success = false;
+
+// Handle form submission
+if (Astro.request.method === 'POST') {
+  try {
+    const contentType = Astro.request.headers.get('content-type') || '';
+    
+    if (!contentType.includes('application/x-www-form-urlencoded') && !contentType.includes('multipart/form-data')) {
+      error = 'Invalid request format';
+    } else {
+      const formData = await Astro.request.formData();
+      
+      // Handle image upload if file provided
+      let imageUrl = '';
+      const imageFile = formData.get('image') as File;
+      
+      if (imageFile && imageFile.size > 0) {
+        // Generate unique filename
+        const fileExt = imageFile.name.split('.').pop();
+        const fileName = `${crypto.randomUUID()}.${fileExt}`;
+        
+        // Upload to Supabase Storage
+        const { data: uploadData, error: uploadError } = await supabaseAdmin.storage
+          .from('opportunity-images')
+          .upload(fileName, imageFile, {
+            contentType: imageFile.type,
+          });
+        
+        if (uploadError) {
+          console.error('Upload error:', uploadError);
+          error = 'Failed to upload image: ' + uploadError.message;
+        } else {
+          // Get public URL
+          const { data: { publicUrl } } = supabaseAdmin.storage
+            .from('opportunity-images')
+            .getPublicUrl(fileName);
+          
+          imageUrl = publicUrl;
+        }
+      }
+      
+      const opportunity = {
+        title: formData.get('title')?.toString() || '',
+        location: formData.get('location')?.toString() || '',
+        council: formData.get('council')?.toString() || null,
+        type: formData.get('type')?.toString() || '',
+        status: formData.get('status')?.toString() || 'inactive',
+        capital_required: formData.get('capital_required')?.toString() || null,
+        target_return: formData.get('target_return')?.toString() || null,
+        timeline: formData.get('timeline')?.toString() || null,
+        summary: formData.get('summary')?.toString() || '',
+        description: formData.get('description')?.toString() || null,
+        image_url: imageUrl || null,
+        // Property Details
+        land_size: formData.get('land_size')?.toString() || null,
+        zoning: formData.get('zoning')?.toString() || null,
+        lot_count: formData.get('lot_count') ? parseInt(formData.get('lot_count')?.toString() || '0') : null,
+        bedrooms: formData.get('bedrooms')?.toString() || null,
+        property_type: formData.get('property_type')?.toString() || null,
+        // Financial Details
+        minimum_investment: formData.get('minimum_investment')?.toString() || null,
+        total_project_value: formData.get('total_project_value')?.toString() || null,
+        equity_required: formData.get('equity_required')?.toString() || null,
+        profit_share: formData.get('profit_share')?.toString() || null,
+        debt_funding: formData.get('debt_funding')?.toString() || null,
+        distribution_frequency: formData.get('distribution_frequency')?.toString() || null,
+        // Timeline & Approvals
+        da_status: formData.get('da_status')?.toString() || null,
+        da_approval_date: formData.get('da_approval_date')?.toString() || null,
+        construction_start: formData.get('construction_start')?.toString() || null,
+        expected_completion: formData.get('expected_completion')?.toString() || null,
+        // Investment Structure
+        investment_structure: formData.get('investment_structure')?.toString() || null,
+        risk_level: formData.get('risk_level')?.toString() || null,
+        investor_slots_total: formData.get('investor_slots_total') ? parseInt(formData.get('investor_slots_total')?.toString() || '0') : null,
+        investor_slots_remaining: formData.get('investor_slots_remaining') ? parseInt(formData.get('investor_slots_remaining')?.toString() || '0') : null,
+        key_risks: formData.get('key_risks')?.toString() || null,
+        // Media & Documents
+        video_url: formData.get('video_url')?.toString() || null,
+        pds_url: formData.get('pds_url')?.toString() || null,
+        feasibility_url: formData.get('feasibility_url')?.toString() || null,
+        info_memorandum_url: formData.get('info_memorandum_url')?.toString() || null,
+        // Display Options
+        featured: formData.get('featured') === 'true',
+        sort_order: formData.get('sort_order') ? parseInt(formData.get('sort_order')?.toString() || '0') : 0,
+      };
+
+      if (!error) {
+        try {
+          const { error: insertError } = await supabaseAdmin
+            .from('opportunities')
+            .insert([opportunity]);
+
+          if (insertError) {
+            error = insertError.message;
+          } else {
+            return Astro.redirect('/admin/opportunities');
+          }
+        } catch (err) {
+          error = err instanceof Error ? err.message : 'Failed to create opportunity';
+        }
+      }
+    }
+  } catch (err) {
+    error = err instanceof Error ? err.message : 'Failed to process form submission';
+  }
+}
+---
+
+<BaseLayout title="Admin - New Opportunity" description="Create a new investment opportunity.">
+  <style>
+    .admin-container {
+      min-height: 100vh;
+      padding: 120px 24px 80px;
+      background-color: #ffffff;
+    }
+
+    @media (min-width: 768px) {
+      .admin-container {
+        padding: 140px 48px 100px;
+      }
+    }
+
+    .admin-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .admin-header {
+      margin-bottom: 40px;
+    }
+
+    .admin-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 300;
+      color: #0a0a0a;
+      margin-bottom: 8px;
+    }
+
+    .admin-subtitle {
+      font-size: 0.9rem;
+      color: #525252;
+      margin-bottom: 24px;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background-color: #0a0a0a;
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background-color: #2a2a2a;
+    }
+
+    .btn-secondary {
+      background-color: #ffffff;
+      color: #0a0a0a;
+      border: 1px solid #e5e5e5;
+    }
+
+    .btn-secondary:hover {
+      border-color: #0a0a0a;
+    }
+
+    .access-denied {
+      text-align: center;
+      padding: 80px 24px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .access-denied-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.75rem;
+      font-weight: 300;
+      color: #0a0a0a;
+      margin-bottom: 16px;
+    }
+
+    .access-denied-text {
+      font-size: 0.95rem;
+      color: #525252;
+      line-height: 1.7;
+    }
+
+    .error-message {
+      padding: 16px;
+      background-color: #fee2e2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      border-radius: 4px;
+      margin-bottom: 24px;
+      font-size: 0.9rem;
+    }
+
+    .success-message {
+      padding: 16px;
+      background-color: #d1fae5;
+      border: 1px solid #a7f3d0;
+      color: #065f46;
+      border-radius: 4px;
+      margin-bottom: 24px;
+      font-size: 0.9rem;
+    }
+
+    .admin-form {
+      background-color: #ffffff;
+      border: 1px solid #e5e5e5;
+      padding: 32px;
+    }
+
+    @media (min-width: 768px) {
+      .admin-form {
+        padding: 40px;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #525252;
+      margin-bottom: 8px;
+    }
+
+    .form-group label .required {
+      color: #ef4444;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      border: 1px solid #e0e0e0;
+      background-color: #ffffff;
+      color: #0a0a0a;
+      transition: border-color 0.2s ease;
+      -webkit-appearance: none;
+      appearance: none;
+      border-radius: 0;
+    }
+
+    .form-group input[type="file"] {
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+
+    .form-group input[type="file"]::file-selector-button {
+      padding: 8px 16px;
+      margin-right: 12px;
+      border: 1px solid #e0e0e0;
+      background-color: #fafafa;
+      color: #0a0a0a;
+      font-family: inherit;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .form-group input[type="file"]::file-selector-button:hover {
+      background-color: #f0f0f0;
+      border-color: #0a0a0a;
+    }
+
+    .current-image {
+      margin-bottom: 16px;
+    }
+
+    .current-image img {
+      display: block;
+      border-radius: 4px;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #0a0a0a;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+      font-family: inherit;
+    }
+
+    .form-group select {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23525252' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+    }
+
+    .form-group .help-text {
+      font-size: 0.8rem;
+      color: #858585;
+      margin-top: 4px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 16px;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid #e5e5e5;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    @media (min-width: 768px) {
+      .form-row {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    fieldset {
+      border: 1px solid #e5e5e5;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 4px;
+    }
+
+    legend {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 500;
+      padding: 0 0.5rem;
+      color: #0a0a0a;
+    }
+
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: auto;
+    }
+
+    .btn-cancel {
+      display: inline-block;
+      padding: 12px 24px;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-decoration: none;
+      background-color: #ffffff;
+      color: #0a0a0a;
+      border: 1px solid #e5e5e5;
+      transition: all 0.3s ease;
+    }
+
+    .btn-cancel:hover {
+      border-color: #0a0a0a;
+    }
+
+    .btn-submit {
+      padding: 12px 24px;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background-color: #0a0a0a;
+      color: #ffffff;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+      background-color: #2a2a2a;
+    }
+  </style>
+
+  <section class="admin-container">
+    <div class="admin-content">
+      <>
+          <div class="admin-header">
+            <h1 class="admin-title">New Opportunity</h1>
+            <p class="admin-subtitle">Create a new investment opportunity</p>
+            
+            <div class="admin-actions">
+              <a href="/admin/opportunities" class="btn btn-secondary">
+                ← Back to List
+              </a>
+            </div>
+
+            {error && (
+              <div class="error-message">
+                Error: {error}
+              </div>
+            )}
+
+            {success && (
+              <div class="success-message">
+                Opportunity created successfully!
+              </div>
+            )}
+          </div>
+
+          <form method="POST" class="admin-form" enctype="multipart/form-data">
+            
+            <!-- BASIC INFO -->
+            <fieldset>
+              <legend>Basic Information</legend>
+              
+              <div class="form-group">
+                <label for="title">Title *</label>
+                <input type="text" id="title" name="title" required placeholder="e.g., 6-Lot Subdivision, Central Coast" />
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="location">Location *</label>
+                  <input type="text" id="location" name="location" required placeholder="e.g., Wyong, NSW" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="council">Council</label>
+                  <input type="text" id="council" name="council" placeholder="e.g., Central Coast Council" />
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="type">Project Type *</label>
+                  <select id="type" name="type" required>
+                    <option value="">Select type...</option>
+                    <option value="Subdivision">Subdivision</option>
+                    <option value="Townhouses">Townhouses</option>
+                    <option value="Duplex">Duplex</option>
+                    <option value="House & Land">House & Land</option>
+                    <option value="Apartments">Apartments</option>
+                    <option value="Commercial">Commercial</option>
+                    <option value="Mixed Use">Mixed Use</option>
+                    <option value="Land Banking">Land Banking</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="status">Status *</label>
+                  <select id="status" name="status" required>
+                    <option value="active">Active</option>
+                    <option value="coming-soon">Coming Soon</option>
+                    <option value="under-review">Under Review</option>
+                    <option value="fully-subscribed">Fully Subscribed</option>
+                    <option value="closed">Closed</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="summary">Summary *</label>
+                <textarea id="summary" name="summary" required rows="2" placeholder="Brief 1-2 sentence overview"></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="description">Full Description</label>
+                <textarea id="description" name="description" rows="6" placeholder="Detailed description of the opportunity"></textarea>
+              </div>
+            </fieldset>
+            
+            <!-- PROPERTY DETAILS -->
+            <fieldset>
+              <legend>Property Details</legend>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="land_size">Land Size</label>
+                  <input type="text" id="land_size" name="land_size" placeholder="e.g., 2,450 sqm" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="zoning">Zoning</label>
+                  <input type="text" id="zoning" name="zoning" placeholder="e.g., R2 Low Density Residential" />
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="lot_count">Number of Lots/Units</label>
+                  <input type="number" id="lot_count" name="lot_count" placeholder="e.g., 6" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="bedrooms">Bedrooms (if applicable)</label>
+                  <input type="text" id="bedrooms" name="bedrooms" placeholder="e.g., 3-4 bed" />
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="property_type">Property Type</label>
+                <select id="property_type" name="property_type">
+                  <option value="">Select...</option>
+                  <option value="Vacant Land">Vacant Land</option>
+                  <option value="House + Land">House + Land</option>
+                  <option value="Development Site">Development Site</option>
+                  <option value="Existing Dwelling">Existing Dwelling</option>
+                  <option value="Commercial Building">Commercial Building</option>
+                </select>
+              </div>
+            </fieldset>
+            
+            <!-- FINANCIAL DETAILS -->
+            <fieldset>
+              <legend>Financial Details</legend>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="capital_required">Total Capital Required</label>
+                  <input type="text" id="capital_required" name="capital_required" placeholder="e.g., $1.2m – $1.5m" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="minimum_investment">Minimum Investment</label>
+                  <input type="text" id="minimum_investment" name="minimum_investment" placeholder="e.g., $250,000" />
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="total_project_value">Total Project Value</label>
+                  <input type="text" id="total_project_value" name="total_project_value" placeholder="e.g., $4.2m" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="equity_required">Equity Required</label>
+                  <input type="text" id="equity_required" name="equity_required" placeholder="e.g., $1.2m" />
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="target_return">Target Return</label>
+                  <input type="text" id="target_return" name="target_return" placeholder="e.g., 18-22% IRR" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="profit_share">Profit Share Structure</label>
+                  <input type="text" id="profit_share" name="profit_share" placeholder="e.g., 50/50 after capital return" />
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="debt_funding">Debt Funding</label>
+                  <input type="text" id="debt_funding" name="debt_funding" placeholder="e.g., Bank secured at 65% LVR" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="distribution_frequency">Distribution Frequency</label>
+                  <select id="distribution_frequency" name="distribution_frequency">
+                    <option value="">Select...</option>
+                    <option value="At project completion">At project completion</option>
+                    <option value="Quarterly">Quarterly</option>
+                    <option value="Bi-annually">Bi-annually</option>
+                    <option value="Annually">Annually</option>
+                    <option value="Per lot settlement">Per lot settlement</option>
+                  </select>
+                </div>
+              </div>
+            </fieldset>
+            
+            <!-- TIMELINE -->
+            <fieldset>
+              <legend>Timeline & Approvals</legend>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="timeline">Overall Timeline</label>
+                  <input type="text" id="timeline" name="timeline" placeholder="e.g., 18-24 months" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="da_status">DA Status</label>
+                  <select id="da_status" name="da_status">
+                    <option value="">Select...</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Lodged">Lodged</option>
+                    <option value="Pre-DA">Pre-DA</option>
+                    <option value="Not Required">Not Required</option>
+                    <option value="CDC">CDC (Complying Development)</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="da_approval_date">DA Approval Date</label>
+                  <input type="date" id="da_approval_date" name="da_approval_date" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="construction_start">Construction Start</label>
+                  <input type="text" id="construction_start" name="construction_start" placeholder="e.g., Q2 2025" />
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="expected_completion">Expected Completion</label>
+                <input type="text" id="expected_completion" name="expected_completion" placeholder="e.g., Q4 2026" />
+              </div>
+            </fieldset>
+            
+            <!-- INVESTMENT STRUCTURE -->
+            <fieldset>
+              <legend>Investment Structure</legend>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="investment_structure">Structure Type</label>
+                  <select id="investment_structure" name="investment_structure">
+                    <option value="">Select...</option>
+                    <option value="Unit Trust">Unit Trust</option>
+                    <option value="Joint Venture">Joint Venture</option>
+                    <option value="Syndicate">Syndicate</option>
+                    <option value="Private Loan">Private Loan</option>
+                    <option value="Equity Partnership">Equity Partnership</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="risk_level">Risk Level</label>
+                  <select id="risk_level" name="risk_level">
+                    <option value="">Select...</option>
+                    <option value="Low">Low</option>
+                    <option value="Low-Medium">Low-Medium</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Medium-High">Medium-High</option>
+                    <option value="High">High</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="investor_slots_total">Total Investor Slots</label>
+                  <input type="number" id="investor_slots_total" name="investor_slots_total" placeholder="e.g., 4" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="investor_slots_remaining">Slots Remaining</label>
+                  <input type="number" id="investor_slots_remaining" name="investor_slots_remaining" placeholder="e.g., 2" />
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="key_risks">Key Risks</label>
+                <textarea id="key_risks" name="key_risks" rows="3" placeholder="List key risk factors for this investment"></textarea>
+              </div>
+            </fieldset>
+            
+            <!-- MEDIA -->
+            <fieldset>
+              <legend>Media & Documents</legend>
+              
+              <div class="form-group">
+                <label for="image">Main Image</label>
+                <input type="file" id="image" name="image" accept="image/*" />
+              </div>
+              
+              <div class="form-group">
+                <label for="video_url">Video URL (YouTube/Vimeo)</label>
+                <input type="url" id="video_url" name="video_url" placeholder="https://youtube.com/watch?v=..." />
+              </div>
+              
+              <div class="form-group">
+                <label for="pds_url">Product Disclosure Statement URL</label>
+                <input type="url" id="pds_url" name="pds_url" placeholder="Link to PDS document" />
+              </div>
+              
+              <div class="form-group">
+                <label for="feasibility_url">Feasibility Study URL</label>
+                <input type="url" id="feasibility_url" name="feasibility_url" placeholder="Link to feasibility document" />
+              </div>
+              
+              <div class="form-group">
+                <label for="info_memorandum_url">Information Memorandum URL</label>
+                <input type="url" id="info_memorandum_url" name="info_memorandum_url" placeholder="Link to IM document" />
+              </div>
+            </fieldset>
+            
+            <!-- DISPLAY OPTIONS -->
+            <fieldset>
+              <legend>Display Options</legend>
+              
+              <div class="form-row">
+                <div class="form-group checkbox-group">
+                  <label>
+                    <input type="checkbox" id="featured" name="featured" value="true" />
+                    Featured Opportunity (show on homepage)
+                  </label>
+                </div>
+                
+                <div class="form-group">
+                  <label for="sort_order">Sort Order</label>
+                  <input type="number" id="sort_order" name="sort_order" value="0" placeholder="0 = default" />
+                </div>
+              </div>
+            </fieldset>
+            
+            <div class="form-actions">
+              <a href="/admin/opportunities" class="btn-cancel">Cancel</a>
+              <button type="submit" class="btn-submit">Create Opportunity</button>
+            </div>
+          </form>
+        </>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
