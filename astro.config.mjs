@@ -1,8 +1,13 @@
 import { defineConfig } from 'astro/config';
-import node from '@astrojs/node';
+import netlify from '@astrojs/netlify';
 
 export default defineConfig({
   site: 'https://caldon.com.au',
-  // output: "static" is now the default and supports API routes
-  adapter: node({ mode: 'standalone' }),
+  output: 'server',
+  adapter: netlify(),
+  vite: {
+    define: {
+      'process.env': {}
+    }
+  }
 });
