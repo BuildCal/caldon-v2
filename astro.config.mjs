@@ -5,9 +5,4 @@ export default defineConfig({
   site: 'https://caldon.com.au',
   output: 'server',
   adapter: netlify(),
-  vite: {
-    define: {
-      'process.env': {}
-    }
-  }
 });

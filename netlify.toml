@@ -1,19 +1,13 @@
 [build]
   command = "npm run build"
-  publish = "dist"
+  publish = "dist/client"
 
 [build.environment]
   NODE_VERSION = "20"
 
-[[redirects]]
-  from = "/admin"
-  to = "/admin/index.html"
-  status = 200
-
-[[redirects]]
-  from = "/admin/*"
-  to = "/admin/index.html"
-  status = 200
+[functions]
+  directory = ".netlify/functions"
+  node_bundler = "esbuild"
 
 [[headers]]
   for = "/*"
