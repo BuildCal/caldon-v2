@@ -113,21 +113,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
 
     /* Philosophy Quote */
-    .philosophy-quote {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 3.5rem;
+        .philosophy-quote {
+      font-family: 'Cormorant Garamond', serif !important;
+      font-size: var(--text-3xl) !important;
       font-weight: 300;
-      line-height: 1.3;
-      color: #0a0a0a;
+      line-height: 1.5;
+      color: #858585;
       text-align: center;
-      max-width: 1000px;
-      margin: 0 auto 64px;
+      margin: 0 auto 48px;
       font-style: italic;
     }
 
-    @media (max-width: 768px) {
+    @media (min-width: 768px) {
       .philosophy-quote {
-        font-size: 2rem;
+        font-size: 1.75rem;
       }
     }
 
@@ -295,37 +294,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       letter-spacing: 0.02em;
     }
 
-    .team-licences {
-      font-size: 0.75rem;
-      color: #525252;
-      margin-bottom: 20px;
-      line-height: 1.6;
-    }
-
-    .team-licence-item {
-      display: inline-block;
-      padding: 4px 10px;
-      background: #f5f5f5;
-      margin: 3px;
-      font-size: 0.7rem;
-      letter-spacing: 0.03em;
-    }
-
     .team-focus {
       font-size: 0.8rem;
       color: #525252;
       line-height: 1.7;
       padding-top: 16px;
       border-top: 1px solid #f0f0f0;
-    }
-
-    .team-focus-label {
-      font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #a0a0a0;
-      margin-bottom: 8px;
+      text-align: left;
     }
 
     /* Advisers Note */
@@ -389,7 +364,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <p class="page-label fade-up">The Firm</p>
       <h1 class="page-title fade-up delay-1">About CALDON</h1>
       <p class="page-description fade-up delay-2">
-        Private property development partnership for select investors across New South Wales.
+        Who we are and how we got here.
       </p>
     </div>
   </section>
@@ -398,13 +373,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="container">
       <div class="content-block">
         <p class="philosophy-quote">
-          "We exist to give sophisticated investors access to development returns without the operational burden of managing a project themselves."
+          "The difference between a good return and a great one is knowing what a site can actually deliver."
         </p>
         <p>
-          CALDON was established in 2015 to bridge a gap in the market: investors with capital seeking development-level returns, but without the time, expertise, or inclination to manage the process themselves.
+          We started CALDON™ because we kept seeing the same problem: sites underutilised, planning opportunities missed, returns left on the table. Investors without the right expertise were settling for less than what was possible.
         </p>
         <p>
-          We operate as an extension of your investment strategy — identifying opportunities, structuring acquisitions, managing the development process, and delivering completed assets. You retain ownership and control. We handle everything else.
+          We become your development team. We find the site, manage feasibility, run the approvals, coordinate construction, and hand you a completed asset that reflects its true potential. You retain ownership. We handle the rest.
         </p>
       </div>
     </div>
@@ -419,13 +394,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="capability-item">
           <h3 class="capability-title">Integrated Team</h3>
           <p class="capability-text">
-            Architecture, quantity surveying, project management, and construction expertise under one roof. No fragmented consultants. No finger-pointing. Single point of accountability.
+            Feasibility, design, QS, planning, and construction capability in-house. One team, one point of contact. No finger-pointing.
           </p>
         </div>
         <div class="capability-item">
           <h3 class="capability-title">Active Deal Flow</h3>
           <p class="capability-text">
-            We continuously assess opportunities across our target markets. Qualified partners receive first access to projects meeting their criteria — not leftover deals.
+            We're always assessing sites across our target markets. You get first access to opportunities that fit your criteria.
           </p>
         </div>
         <div class="capability-item">
@@ -443,7 +418,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
 
       <p class="capability-note">
-        For select projects, we offer full design-and-construct delivery through our in-house construction team — available by arrangement for the right opportunity.
+        For select projects, we can also build through our in-house construction team.
       </p>
     </div>
   </section>
@@ -489,44 +464,45 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       <div class="team-grid">
         <div class="team-member">
-          <img src="/team/bradley-caldon.jpg" alt="Bradley Caldon" class="team-photo" />
+          <img src="/team/bradley-caldon.png" alt="Bradley Caldon" class="team-photo" />
           <h3 class="team-name">Bradley Caldon</h3>
           <p class="team-role">Principal & Managing Director</p>
-          <p class="team-credentials">BConstMgt(Bldg)(Hons)</p>
-          <div class="team-licences">
-            <span class="team-licence-item">Licensed Builder NSW</span>
-            <span class="team-licence-item">BUP0002269</span>
-          </div>
+          <p class="team-credentials">BConstMgt(Bldg)(Hons) · Licensed Builder (NSW) · Building Practitioner · Chartered Builder (AIB)</p>
           <div class="team-focus">
-            <p class="team-focus-label">Focus</p>
-            Research, Acquisitions, Quantity Surveying & Tender Management
+            <p>
+              Brad brings over 17 years' experience in construction and property development, spanning government infrastructure, land subdivisions, commercial developments, and award-winning luxury residential projects.
+            </p>
+            <p style="margin-top: 12px;">
+              A Licensed Builder and Chartered Builder (AIB), Brad has successfully established and led businesses across three industries: construction, property development, and manufacturing.
+            </p>
           </div>
         </div>
         <div class="team-member">
-          <img src="/team/john-caldon.jpg" alt="John Caldon" class="team-photo" />
+          <img src="/team/john-caldon.png" alt="John Caldon" class="team-photo" />
           <h3 class="team-name">John Caldon</h3>
           <p class="team-role">Senior Adviser</p>
-          <p class="team-credentials">Licensed Builder (NSW)</p>
-          <div class="team-licences">
-            <span class="team-licence-item">40+ Years Experience</span>
-          </div>
+          <p class="team-credentials">Licensed Builder (NSW) · Government Policy Adviser · 40+ Years Industry Experience</p>
           <div class="team-focus">
-            <p class="team-focus-label">Focus</p>
-            Site Sourcing, Option Negotiation & Deal Strategy
+            <p>
+              John has constructed more than 1,600 buildings across a career spanning over four decades. His experience covers residential and commercial construction, large-scale land subdivision, and agricultural development.
+            </p>
+            <p style="margin-top: 12px;">
+              A trusted adviser to state and federal governments on industry policy, John brings unparalleled networks—from agents and vendors to councils and contractors.
+            </p>
           </div>
         </div>
         <div class="team-member">
-          <img src="/team/andrew-eggins.jpg" alt="Andrew Eggins" class="team-photo" />
+          <img src="/team/andrew-eggins.png" alt="Andrew Eggins" class="team-photo" />
           <h3 class="team-name">Andrew Eggins</h3>
           <p class="team-role">Design Director</p>
-          <p class="team-credentials">BArch, AdvDipBus</p>
-          <div class="team-licences">
-            <span class="team-licence-item">Architecture</span>
-            <span class="team-licence-item">Town Planning</span>
-          </div>
+          <p class="team-credentials">BArch · AdvDipBus · BDAA Member</p>
           <div class="team-focus">
-            <p class="team-focus-label">Focus</p>
-            Design, DA Management, Town Planning & Consultant Coordination
+            <p>
+              Andrew brings a unique combination of design expertise and commercial acumen. With over 1,000 building designs completed across residential, commercial, and mixed-use projects, he leads our design capability.
+            </p>
+            <p style="margin-top: 12px;">
+              An experienced Business Development Manager across multiple industries, Andrew understands what it takes to grow a business and build lasting client relationships.
+            </p>
           </div>
         </div>
       </div>

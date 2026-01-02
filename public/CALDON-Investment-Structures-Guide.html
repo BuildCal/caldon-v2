@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CALDON™ — Property Development Investment Structures Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* PDF Download Button */
+    .download-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a1a1a;
+      color: #ffffff;
+      padding: 12px 20px;
+      font-family: 'Inter', sans-serif;
+      font-size: 9pt;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      z-index: 1000;
+      transition: background 0.2s ease;
+    }
+
+    .download-btn:hover {
+      background: #333333;
+    }
+
+    @media print {
+      .download-btn {
+        display: none;
+      }
+    }
+
+    html, body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 9pt;
+      line-height: 1.5;
+      color: #1a1a1a;
+      background: #ffffff;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      width: 210mm;
+      height: 297mm;
+      padding: 15mm 18mm 18mm 18mm;
+      margin: 0 auto;
+      background: #ffffff;
+      position: relative;
+      page-break-after: always;
+      page-break-inside: avoid;
+      overflow: hidden;
+    }
+
+    .page:last-child {
+      page-break-after: auto;
+    }
+
+    /* Cover Page */
+    .cover {
+      background: #0a0a0a;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #ffffff;
+      padding: 40mm;
+    }
+
+    .cover-logo {
+      width: 250px;
+      margin-bottom: 45px;
+      filter: brightness(0) invert(1);
+    }
+
+    .cover-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24pt;
+      font-weight: 300;
+      letter-spacing: 0.02em;
+      line-height: 1.3;
+      margin-bottom: 12px;
+      max-width: 400px;
+    }
+
+    .cover-subtitle {
+      font-size: 8pt;
+      font-weight: 300;
+      color: #ffffff;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 50px;
+    }
+
+    .cover-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11pt;
+      font-weight: 300;
+      font-style: italic;
+      color: #888888;
+      max-width: 320px;
+      line-height: 1.5;
+    }
+
+    .cover-footer {
+      position: absolute;
+      bottom: 18mm;
+      left: 18mm;
+      right: 18mm;
+      text-align: center;
+      font-size: 7.5pt;
+      color: #666666;
+      letter-spacing: 0.05em;
+    }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6mm;
+      padding-bottom: 2.5mm;
+      border-bottom: 1px solid #e8e8e8;
+    }
+
+    .page-header-logo {
+      height: 16px;
+    }
+
+    .page-header-title {
+      font-size: 6.5pt;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #888888;
+    }
+
+    /* Typography */
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18pt;
+      font-weight: 300;
+      color: #1a1a1a;
+      margin-bottom: 3mm;
+      line-height: 1.2;
+    }
+
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12pt;
+      font-weight: 400;
+      color: #1a1a1a;
+      margin-bottom: 2.5mm;
+      margin-top: 4mm;
+    }
+
+    h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10pt;
+      font-weight: 400;
+      color: #1a1a1a;
+      margin-bottom: 1.5mm;
+    }
+
+    p {
+      margin-bottom: 2mm;
+      color: #4a4a4a;
+      font-size: 8.5pt;
+    }
+
+    .lead {
+      font-size: 9.5pt;
+      line-height: 1.6;
+      color: #4a4a4a;
+      margin-bottom: 4mm;
+    }
+
+    .section-label {
+      font-size: 6pt;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #888888;
+      margin-bottom: 1mm;
+    }
+
+    /* Two Column Layout */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5mm;
+    }
+
+    /* Three Column Layout */
+    .three-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 4mm;
+    }
+
+    /* Content Block */
+    .content-block {
+      margin-bottom: 3mm;
+    }
+
+    .content-block p {
+      font-size: 8.5pt;
+      line-height: 1.55;
+    }
+
+    /* Quote Box */
+    .quote-box {
+      background: #f8f8f8;
+      padding: 4mm;
+      margin: 4mm 0;
+      border-left: 2px solid #1a1a1a;
+    }
+
+    .quote-box p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10pt;
+      font-weight: 300;
+      font-style: italic;
+      color: #1a1a1a;
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    /* Highlight Box */
+    .highlight-box {
+      background: #0a0a0a;
+      color: #ffffff;
+      padding: 4mm;
+      margin: 4mm 0;
+    }
+
+    .highlight-box h3 {
+      color: #ffffff;
+      margin-bottom: 1.5mm;
+      font-size: 9.5pt;
+    }
+
+    .highlight-box p {
+      font-size: 8.5pt;
+      color: #cccccc;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: #e8e8e8;
+      margin: 4mm 0;
+    }
+
+    /* Structure Card */
+    .structure-card {
+      background: #fafafa;
+      padding: 4mm;
+      margin-bottom: 4mm;
+    }
+
+    .structure-card h2 {
+      margin-top: 0;
+      margin-bottom: 2mm;
+      font-size: 11pt;
+    }
+
+    .structure-card p {
+      font-size: 8pt;
+      line-height: 1.5;
+      margin-bottom: 1.5mm;
+    }
+
+    .structure-card .tag {
+      display: inline-block;
+      background: #1a1a1a;
+      color: #ffffff;
+      font-size: 6pt;
+      padding: 1mm 2mm;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-right: 1mm;
+      margin-bottom: 1mm;
+    }
+
+    /* Info Grid */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm;
+      margin-top: 3mm;
+    }
+
+    .info-item {
+      padding: 3mm;
+      background: #f5f5f5;
+    }
+
+    .info-item h4 {
+      font-size: 8pt;
+      font-weight: 500;
+      color: #1a1a1a;
+      margin-bottom: 1mm;
+    }
+
+    .info-item p {
+      font-size: 7.5pt;
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    /* Pros/Cons */
+    .pros-cons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm;
+      margin-top: 3mm;
+    }
+
+    .pros, .cons {
+      padding: 3mm;
+    }
+
+    .pros {
+      background: #f0f7f0;
+      border-left: 2px solid #2d5a2d;
+    }
+
+    .cons {
+      background: #f7f0f0;
+      border-left: 2px solid #5a2d2d;
+    }
+
+    .pros h4, .cons h4 {
+      font-size: 7.5pt;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5mm;
+    }
+
+    .pros h4 {
+      color: #2d5a2d;
+    }
+
+    .cons h4 {
+      color: #5a2d2d;
+    }
+
+    .pros ul, .cons ul {
+      list-style: none;
+      font-size: 7.5pt;
+      color: #4a4a4a;
+    }
+
+    .pros li::before {
+      content: "+";
+      color: #2d5a2d;
+      font-weight: 500;
+      margin-right: 1.5mm;
+    }
+
+    .cons li::before {
+      content: "−";
+      color: #5a2d2d;
+      font-weight: 500;
+      margin-right: 1.5mm;
+    }
+
+    .pros li, .cons li {
+      margin-bottom: 1mm;
+    }
+
+    /* Strategy Box */
+    .strategy-box {
+      background: #f8f8f8;
+      border: 1px solid #e0e0e0;
+      padding: 3mm;
+      margin-top: 3mm;
+    }
+
+    .strategy-box h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 9pt;
+      font-weight: 400;
+      color: #1a1a1a;
+      margin-bottom: 1.5mm;
+    }
+
+    .strategy-box p {
+      font-size: 7.5pt;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* Comparison Table */
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 3mm;
+      font-size: 7.5pt;
+    }
+
+    .comparison-table th {
+      text-align: left;
+      padding: 2mm;
+      background: #1a1a1a;
+      color: #ffffff;
+      font-weight: 500;
+      font-size: 7pt;
+    }
+
+    .comparison-table td {
+      padding: 2mm;
+      border-bottom: 1px solid #f0f0f0;
+      color: #4a4a4a;
+    }
+
+    .comparison-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .comparison-table tr:nth-child(even) {
+      background: #fafafa;
+    }
+
+    /* Checklist */
+    .checklist {
+      margin-top: 2mm;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 2mm;
+      margin-bottom: 1.5mm;
+      font-size: 8pt;
+      color: #4a4a4a;
+    }
+
+    .checklist-item::before {
+      content: "✓";
+      color: #1a1a1a;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    /* Warning Box */
+    .warning-box {
+      background: #fff8e6;
+      border-left: 2px solid #c9a227;
+      padding: 3mm;
+      margin: 3mm 0;
+    }
+
+    .warning-box p {
+      font-size: 7.5pt;
+      color: #5a4a1a;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .warning-box strong {
+      color: #3a3010;
+    }
+
+    /* Example Box */
+    .example-box {
+      background: #f0f4f8;
+      border-left: 2px solid #2d4a5a;
+      padding: 3mm;
+      margin: 3mm 0;
+    }
+
+    .example-box h4 {
+      font-size: 7.5pt;
+      font-weight: 500;
+      color: #2d4a5a;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5mm;
+    }
+
+    .example-box p {
+      font-size: 7.5pt;
+      color: #3a4a5a;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* Page Footer */
+    .page-footer {
+      position: absolute;
+      bottom: 10mm;
+      left: 18mm;
+      right: 18mm;
+      display: flex;
+      justify-content: space-between;
+      font-size: 6.5pt;
+      color: #aaaaaa;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background: none;
+      }
+      
+      .page {
+        margin: 0;
+        box-shadow: none;
+        page-break-after: always;
+        page-break-inside: avoid;
+      }
+    }
+
+    /* Screen Preview */
+    @media screen {
+      body {
+        background: #e5e5e5;
+        padding: 20px;
+      }
+
+      .page {
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="download-btn" onclick="window.print()">Download PDF</button>
+
+  <!-- Page 1: Cover -->
+  <div class="page cover">
+    <img src="/logo.png" alt="CALDON™" class="cover-logo">
+    <h1 class="cover-title">Property Development Investment Structures</h1>
+    <p class="cover-subtitle">A Comprehensive Guide</p>
+    <p class="cover-tagline">"The right structure can be the difference between a good return and a great one."</p>
+    <div class="cover-footer">
+      invest@caldon.com.au · www.caldon.com.au
+    </div>
+  </div>
+
+  <!-- Page 2: Introduction -->
+  <div class="page">
+    <div class="page-header">
+      <img src="/logo.png" alt="CALDON™" class="page-header-logo">
+      <span class="page-header-title">Introduction</span>
+    </div>
+
+    <p class="section-label">Overview</p>
+    <h1>Why Structure Matters</h1>
+    
+    <p class="lead">
+      The legal structure you choose for a property development can significantly impact your tax position, asset protection, liability exposure, and exit flexibility. Getting it right from day one is essential—restructuring mid-project is often costly or impossible.
+    </p>
+
+    <p>
+      This guide examines the six most common structures used in Australian property development, exploring when each is appropriate, the advantages and disadvantages, and strategic approaches to maximise returns within the law.
+    </p>
+
+    <div class="divider"></div>
+
+    <h2>Key Considerations</h2>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <h4>Tax Efficiency</h4>
+        <p>Different structures attract different tax treatments. Income tax, capital gains tax, GST, and land tax all vary depending on how the investment is held.</p>
+      </div>
+      <div class="info-item">
+        <h4>Asset Protection</h4>
+        <p>Separating development assets from personal wealth protects against claims arising from the project and limits exposure to project-specific risks.</p>
+      </div>
+      <div class="info-item">
+        <h4>Liability Management</h4>
+        <p>Development carries inherent risks. The right structure ensures personal assets aren't exposed to project liabilities, builder disputes, or financier claims.</p>
+      </div>
+      <div class="info-item">
+        <h4>Exit Flexibility</h4>
+        <p>How you intend to exit—sell, hold, refinance, or transfer—should inform your structure choice. Some structures offer more flexibility than others.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2>The Six Core Structures</h2>
+
+    <div class="three-col">
+      <div style="padding: 2mm; background: #fafafa;">
+        <p style="font-size: 8pt; font-weight: 500; margin-bottom: 1mm;">1. Special Purpose Vehicle</p>
+        <p style="font-size: 7pt; margin: 0;">Single-project companies</p>
+      </div>
+      <div style="padding: 2mm; background: #fafafa;">
+        <p style="font-size: 8pt; font-weight: 500; margin-bottom: 1mm;">2. Company</p>
+        <p style="font-size: 7pt; margin: 0;">Ongoing development entities</p>
+      </div>
+      <div style="padding: 2mm; background: #fafafa;">
+        <p style="font-size: 8pt; font-weight: 500; margin-bottom: 1mm;">3. Discretionary Trust</p>
+        <p style="font-size: 7pt; margin: 0;">Family wealth structures</p>
+      </div>
+      <div style="padding: 2mm; background: #fafafa;">
+        <p style="font-size: 8pt; font-weight: 500; margin-bottom: 1mm;">4. Unit Trust</p>
+        <p style="font-size: 7pt; margin: 0;">Joint venture vehicles</p>
+      </div>
+      <div style="padding: 2mm; background: #fafafa;">
+        <p style="font-size: 8pt; font-weight: 500; margin-bottom: 1mm;">5. SMSF</p>
+        <p style="font-size: 7pt; margin: 0;">Superannuation strategies</p>
+      </div>
+      <div style="padding: 2mm; background: #fafafa;">
+        <p style="font-size: 8pt; font-weight: 500; margin-bottom: 1mm;">6. Hybrid Structures</p>
+        <p style="font-size: 7pt; margin: 0;">Combined approaches</p>
+      </div>
+    </div>
+
+    <div class="warning-box">
+      <p><strong>Important:</strong> This guide provides general information only and does not constitute financial, tax, or legal advice. Always consult qualified professionals—accountant, solicitor, and financial adviser—before implementing any structure. Individual circumstances vary significantly.</p>
+    </div>
+
+    <div class="page-footer">
+      <span>CALDON™</span>
+      <span>2</span>
+    </div>
+  </div>
+
+  <!-- Page 3: SPV -->
+  <div class="page">
+    <div class="page-header">
+      <img src="/logo.png" alt="CALDON™" class="page-header-logo">
+      <span class="page-header-title">Special Purpose Vehicle</span>
+    </div>
+
+    <p class="section-label">Structure 1</p>
+    <h1>Special Purpose Vehicle (SPV)</h1>
+    
+    <p class="lead">
+      A Special Purpose Vehicle is a company established for a single, specific project. Once the project is complete, the SPV can be wound up, sold, or retained—providing maximum flexibility and clean separation from other business activities.
+    </p>
+
+    <div class="two-col">
+      <div>
+        <h2>How It Works</h2>
+        <p>
+          A new proprietary limited company (Pty Ltd) is registered specifically for the development. The SPV holds the land, enters contracts, secures finance, and ultimately owns the completed asset. Shareholders are typically the investor(s) or their related entities.
+        </p>
+        <p>
+          The SPV operates independently—its own bank accounts, contracts, and liabilities. This "ring-fencing" means project risks don't flow through to other assets or entities.
+        </p>
+      </div>
+      <div>
+        <h2>Who Should Use It</h2>
+        <p>
+          SPVs are ideal for investors undertaking a single project, joint ventures between unrelated parties, or those who want a clean exit strategy. They're particularly useful when the project may be sold as a going concern (selling the company rather than the asset).
+        </p>
+        <p>
+          Developers with multiple projects often use separate SPVs for each, ensuring one project's issues don't contaminate others.
+        </p>
+      </div>
+    </div>
+
+    <div class="pros-cons">
+      <div class="pros">
+        <h4>Advantages</h4>
+        <ul>
+          <li>Complete liability separation</li>
+          <li>Clean exit—sell company or assets</li>
+          <li>Simple joint venture structure</li>
+          <li>Ring-fenced project risks</li>
+          <li>Can be wound up post-completion</li>
+          <li>Clear ownership and profit allocation</li>
+        </ul>
+      </div>
+      <div class="cons">
+        <h4>Disadvantages</h4>
+        <ul>
+          <li>No CGT discount (company rate applies)</li>
+          <li>Setup and ongoing compliance costs</li>
+          <li>Profits taxed at company rate (25-30%)</li>
+          <li>Division 7A issues if loans to shareholders</li>
+          <li>Annual ASIC fees and reporting</li>
+          <li>Potential double taxation on distribution</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="strategy-box">
+      <h4>Strategic Approach: The "Sell the Company" Exit</h4>
+      <p>
+        Rather than selling the completed property (triggering GST and potentially stamp duty for the buyer), consider selling the SPV shares. The buyer acquires the company—and with it, the property. This can defer or reduce tax implications and may be attractive to buyers seeking to acquire the asset's tax history. Structure the shareholding from day one with this exit in mind.
+      </p>
+    </div>
+
+    <div class="example-box">
+      <h4>Example Scenario</h4>
+      <p>
+        Two unrelated investors want to develop a site together, contributing 60/40 capital. They establish an SPV with shareholdings reflecting their contributions. All profits and proceeds flow proportionally. On completion, they sell the SPV to a third party wanting a turnkey investment property—avoiding GST on the sale and providing the buyer with existing depreciation schedules.
+      </p>
+    </div>
+
+    <div class="page-footer">
+      <span>CALDON™</span>
+      <span>3</span>
+    </div>
+  </div>
+
+  <!-- Page 4: Company -->
+  <div class="page">
+    <div class="page-header">
+      <img src="/logo.png" alt="CALDON™" class="page-header-logo">
+      <span class="page-header-title">Company Structure</span>
+    </div>
+
+    <p class="section-label">Structure 2</p>
+    <h1>Company (Pty Ltd)</h1>
+    
+    <p class="lead">
+      A standard proprietary limited company used for ongoing development activities rather than a single project. Suitable for developers building a portfolio or conducting multiple projects over time, with profits retained for reinvestment.
+    </p>
+
+    <div class="two-col">
+      <div>
+        <h2>How It Works</h2>
+        <p>
+          The company is established as an ongoing trading entity. It can hold multiple properties, conduct successive developments, and retain profits for future projects. Shareholders receive returns through dividends (franked, carrying tax credits) or through eventual sale of shares.
+        </p>
+        <p>
+          Companies are taxed at a flat rate (25% for base rate entities, 30% otherwise) on profits, regardless of the shareholders' personal tax positions.
+        </p>
+      </div>
+      <div>
+        <h2>Who Should Use It</h2>
+        <p>
+          Companies suit developers intending to conduct multiple projects, reinvest profits rather than distribute them, or build a long-term development business. They're also appropriate where asset protection is paramount and personal liability must be minimised.
+        </p>
+        <p>
+          Not ideal for one-off projects where the investor wants to access profits personally with CGT discount benefits.
+        </p>
+      </div>
+    </div>
+
+    <div class="pros-cons">
+      <div class="pros">
+        <h4>Advantages</h4>
+        <ul>
+          <li>Flat tax rate (25-30%)</li>
+          <li>Limited liability protection</li>
+          <li>Retained earnings for reinvestment</li>
+          <li>Franked dividends carry tax credits</li>
+          <li>Perpetual existence</li>
+          <li>Well-understood by lenders</li>
+        </ul>
+      </div>
+      <div class="cons">
+        <h4>Disadvantages</h4>
+        <ul>
+          <li>No 50% CGT discount</li>
+          <li>Division 7A loan restrictions</li>
+          <li>Potential double taxation</li>
+          <li>Less flexibility than trusts</li>
+          <li>Ongoing compliance requirements</li>
+          <li>Harder to distribute losses</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="strategy-box">
+      <h4>Strategic Approach: The Bucket Company</h4>
+      <p>
+        Use a company as a "bucket" to receive distributions from a family trust, capping tax at the company rate rather than personal marginal rates. The company retains profits for future development funding. When shareholders are in lower tax brackets (retirement, for example), pay franked dividends—the franking credits can result in tax refunds. This approach separates development profits from personal income streams.
+      </p>
+    </div>
+
+    <div class="example-box">
+      <h4>Example Scenario</h4>
+      <p>
+        A developer completes 2-3 projects per year and wants to build capital for larger future developments. Rather than distributing all profits (and paying top marginal tax rates), profits are retained in the company at 25% tax. Over five years, retained earnings fund a major project without external finance. The company has also built a track record attractive to future lenders and JV partners.
+      </p>
+    </div>
+
+    <div class="warning-box">
+      <p><strong>Division 7A Warning:</strong> Loans from a company to shareholders or associates must comply with Division 7A rules or be treated as unfranked dividends. Ensure any drawings are structured as compliant loans with minimum interest rates and repayment terms, or as properly declared dividends.</p>
+    </div>
+
+    <div class="page-footer">
+      <span>CALDON™</span>
+      <span>4</span>
+    </div>
+  </div>
+
+  <!-- Page 5: Discretionary Trust -->
+  <div class="page">
+    <div class="page-header">
+      <img src="/logo.png" alt="CALDON™" class="page-header-logo">
+      <span class="page-header-title">Discretionary Trust</span>
+    </div>
+
+    <p class="section-label">Structure 3</p>
+    <h1>Discretionary (Family) Trust</h1>
+    
+    <p class="lead">
+      A discretionary trust provides flexibility to distribute income and capital gains to beneficiaries in the most tax-effective manner each year. The trustee has discretion over distributions, making it ideal for family wealth structures and estate planning.
+    </p>
+
+    <div class="two-col">
+      <div>
+        <h2>How It Works</h2>
+        <p>
+          A trust is established with a trustee (individual or company) who holds assets for the benefit of nominated beneficiaries. Each year, the trustee decides how to distribute income and capital among beneficiaries—typically directing income to those in lower tax brackets.
+        </p>
+        <p>
+          The trust itself doesn't pay tax; income is taxed in the hands of beneficiaries at their marginal rates. The 50% CGT discount flows through to individual beneficiaries.
+        </p>
+      </div>
+      <div>
+        <h2>Who Should Use It</h2>
+        <p>
+          Discretionary trusts suit families with members in varying tax positions—a high-income earner can direct development profits to a spouse or adult children in lower brackets. They're excellent for asset protection (assets held by the trust, not individuals) and intergenerational wealth transfer.
+        </p>
+        <p>
+          Less suitable for joint ventures with unrelated parties who need fixed entitlements.
+        </p>
+      </div>
+    </div>
+
+    <div class="pros-cons">
+      <div class="pros">
+        <h4>Advantages</h4>
+        <ul>
+          <li>Flexible income distribution</li>
+          <li>50% CGT discount available</li>
+          <li>Strong asset protection</li>
+          <li>Estate planning benefits</li>
+          <li>Income splitting among family</li>
+          <li>Land tax threshold in some states</li>
+        </ul>
+      </div>
+      <div class="cons">
+        <h4>Disadvantages</h4>
+        <ul>
+          <li>Cannot distribute losses</li>
+          <li>Complex deed requirements</li>
+          <li>Trustee personal liability risk</li>
+          <li>Land tax surcharges may apply</li>
+          <li>Not suitable for unrelated JVs</li>
+          <li>Potential loan restrictions</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="strategy-box">
+      <h4>Strategic Approach: Streaming Capital Gains</h4>
+      <p>
+        When a development property is sold, the capital gain can be "streamed" specifically to beneficiaries who will benefit most from the 50% CGT discount—such as those with capital losses to offset, or lower marginal tax rates. A high-income beneficiary might receive only a nominal distribution while the gain flows to family members in lower brackets, legally minimising the overall tax burden.
+      </p>
+    </div>
+
+    <div class="strategy-box">
+      <h4>Strategic Approach: Corporate Trustee Protection</h4>
+      <p>
+        Appoint a $2 company as trustee rather than an individual. If something goes wrong, the trustee's liability is limited to the company's nominal assets. This provides an additional layer of protection—the individual controllers remain directors but aren't personally exposed as trustee. Ensure the company has no other assets or activities.
+      </p>
+    </div>
+
+    <div class="example-box">
+      <h4>Example Scenario</h4>
+      <p>
+        A family trust develops a townhouse project with $400,000 profit. The high-income father (45% bracket) takes a $10,000 distribution. Adult children studying at university (0-19% bracket) each receive $150,000, and the stay-at-home mother ($45,000 other income) receives $90,000. Total family tax: approximately $65,000. If held personally by the father: approximately $180,000.
+      </p>
+    </div>
+
+    <div class="page-footer">
+      <span>CALDON™</span>
+      <span>5</span>
+    </div>
+  </div>
+
+  <!-- Page 6: Unit Trust -->
+  <div class="page">
+    <div class="page-header">
+      <img src="/logo.png" alt="CALDON™" class="page-header-logo">
+      <span class="page-header-title">Unit Trust</span>
+    </div>
+
+    <p class="section-label">Structure 4</p>
+    <h1>Unit Trust</h1>
+    
+    <p class="lead">
+      A unit trust provides fixed entitlements based on unit holdings, making it ideal for joint ventures between unrelated parties who need certainty about their share of profits and assets. Each unit holder knows exactly what they're entitled to.
+    </p>
+
+    <div class="two-col">
+      <div>
+        <h2>How It Works</h2>
+        <p>
+          The trust issues units to investors in proportion to their capital contributions. A 60/40 joint venture would see one party hold 60 units and the other 40. Income and capital distributions flow according to unit holdings—there's no trustee discretion.
+        </p>
+        <p>
+          Individual unit holders can access the 50% CGT discount on their share of capital gains. Units can be transferred or sold, providing liquidity options.
+        </p>
+      </div>
+      <div>
+        <h2>Who Should Use It</h2>
+        <p>
+          Unit trusts are the go-to structure for joint ventures between unrelated parties, syndicated investments, or any arrangement requiring fixed, defined profit shares. They provide the certainty that discretionary trusts cannot.
+        </p>
+        <p>
+          Also useful where unit holders may change during the project—units can be transferred without restructuring the underlying asset ownership.
+        </p>
+      </div>
+    </div>
+
+    <div class="pros-cons">
+      <div class="pros">
+        <h4>Advantages</h4>
+        <ul>
+          <li>Fixed, certain entitlements</li>
+          <li>50% CGT discount (individuals)</li>
+          <li>Units can be transferred/sold</li>
+          <li>Clear JV profit allocation</li>
+          <li>Familiar to commercial parties</li>
+          <li>Flexible unit classes possible</li>
+        </ul>
+      </div>
+      <div class="cons">
+        <h4>Disadvantages</h4>
+        <ul>
+          <li>No income streaming flexibility</li>
+          <li>Fixed allocations lock in tax outcomes</li>
+          <li>Land tax—no threshold (NSW)</li>
+          <li>Stamp duty on unit transfers</li>
+          <li>Cannot distribute losses</li>
+          <li>More complex than company JVs</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="strategy-box">
+      <h4>Strategic Approach: Different Unit Classes</h4>
+      <p>
+        Issue different classes of units with different rights. "A Class" units might receive a priority return (say, 10% p.a.) before "B Class" units share in remaining profits. This allows one investor to take lower risk/lower return while another takes higher risk/higher return. The structure can replicate debt-like returns for conservative investors alongside equity returns for active developers.
+      </p>
+    </div>
+
+    <div class="strategy-box">
+      <h4>Strategic Approach: Discretionary Trust as Unit Holder</h4>
+      <p>
+        Rather than holding units personally, hold them through a discretionary family trust. The unit trust provides fixed entitlements between JV parties, while each party's family trust then has flexibility to distribute their share among family beneficiaries. This combines the certainty of unit trusts with the tax flexibility of discretionary trusts.
+      </p>
+    </div>
+
+    <div class="example-box">
+      <h4>Example Scenario</h4>
+      <p>
+        Three investors form a unit trust—Investor A (developer) holds 20 units, Investor B holds 50 units, Investor C holds 30 units. Investors B and C provide capital; A provides expertise and project management. Profits distribute 20/50/30. Each investor's units are held by their respective family trusts, allowing each family to optimise their own tax position while maintaining clear JV entitlements.
+      </p>
+    </div>
+
+    <div class="page-footer">
+      <span>CALDON™</span>
+      <span>6</span>
+    </div>
+  </div>
+
+  <!-- Page 7: SMSF -->
+  <div class="page">
+    <div class="page-header">
+      <img src="/logo.png" alt="CALDON™" class="page-header-logo">
+      <span class="page-header-title">Self-Managed Super Fund</span>
+    </div>
+
+    <p class="section-label">Structure 5</p>
+    <h1>Self-Managed Super Fund (SMSF)</h1>
+    
+    <p class="lead">
+      Property development within an SMSF offers concessional tax rates but comes with significant restrictions and compliance requirements. When done correctly, it can be a powerful wealth-building strategy for retirement.
+    </p>
+
+    <div class="two-col">
+      <div>
+        <h2>How It Works</h2>
+        <p>
+          The SMSF acquires property (potentially using a Limited Recourse Borrowing Arrangement) and either develops or holds it. Rental income is taxed at 15%, capital gains at 10% (if held 12+ months), and assets in pension phase are tax-free.
+        </p>
+        <p>
+          Strict rules apply: the property cannot be lived in or rented by members or related parties. All decisions must satisfy the "sole purpose test"—providing retirement benefits to members.
+        </p>
+      </div>
+      <div>
+        <h2>Who Should Use It</h2>
+        <p>
+          SMSFs suit investors with substantial superannuation balances seeking long-term property exposure, typically buy-and-hold strategies rather than active development. The concessional tax rates compound significantly over decades.
+        </p>
+        <p>
+          Less suitable for active development (construction restrictions apply to LRBAs) or those needing access to funds before retirement.
+        </p>
+      </div>
+    </div>
+
+    <div class="pros-cons">
+      <div class="pros">
+        <h4>Advantages</h4>
+        <ul>
+          <li>15% income tax rate</li>
+          <li>10% CGT rate (12+ months)</li>
+          <li>Tax-free in pension phase</li>
+          <li>Asset protection from creditors</li>
+          <li>Forced savings discipline</li>
+          <li>Compounds over long term</li>
+        </ul>
+      </div>
+      <div class="cons">
+        <h4>Disadvantages</h4>
+        <ul>
+          <li>Cannot access until retirement</li>
+          <li>LRBA restrictions on construction</li>
+          <li>Strict compliance requirements</li>
+          <li>Related party transaction limits</li>
+          <li>Sole purpose test constraints</li>
+          <li>Contribution caps limit capital</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="warning-box">
+      <p><strong>LRBA Construction Warning:</strong> If using a Limited Recourse Borrowing Arrangement, the property must be a "single acquirable asset" at purchase. Significant construction or development that changes the asset's fundamental nature can breach LRBA rules. Purpose-built development using LRBA debt is generally not permitted. Seek specialist SMSF advice.</p>
+    </div>
+
+    <div class="strategy-box">
+      <h4>Strategic Approach: SMSF as Unit Holder</h4>
+      <p>
+        Rather than the SMSF directly developing property, the SMSF can hold units in a unit trust that undertakes the development. The unit trust (with appropriate structuring) conducts the development while the SMSF simply holds a passive investment. Returns flow to the SMSF at concessional rates. This approach requires careful structuring—ensure SMSF-specific advice is obtained.
+      </p>
+    </div>
+
+    <div class="strategy-box">
+      <h4>Strategic Approach: Pension Phase Development Profits</h4>
+      <p>
+        Time property sales for when members are in pension phase (retirement). A property purchased and developed while in accumulation phase can be sold tax-free once the member retires and commences a pension. The capital gain that would have been taxed at 10% becomes completely tax-free. Requires long-term planning and adequate retirement timeline.
+      </p>
+    </div>
+
+    <div class="example-box">
+      <h4>Example Scenario</h4>
+      <p>
+        An SMSF with $800,000 purchases a property for $600,000 (no LRBA). The property is a house on a large block. The SMSF subdivides (minor works, no construction) and sells the rear lot for $350,000, retaining the house. The subdivision profit, taxed at 15%, funds further investments. Had this been done personally at a 45% marginal rate, tax would have been three times higher.
+      </p>
+    </div>
+
+    <div class="page-footer">
+      <span>CALDON™</span>
+      <span>7</span>
+    </div>
+  </div>
+
+  <!-- Page 8: Hybrid Structures -->
+  <div class="page">
+    <div class="page-header">
+      <img src="/logo.png" alt="CALDON™" class="page-header-logo">
+      <span class="page-header-title">Hybrid Structures</span>
+    </div>
+
+    <p class="section-label">Structure 6</p>
+    <h1>Hybrid Structures</h1>
+    
+    <p class="lead">
+      Sophisticated investors often combine multiple structures to optimise for tax efficiency, asset protection, and flexibility simultaneously. These hybrid approaches leverage the advantages of each component structure while mitigating their individual weaknesses.
+    </p>
+
+    <h2>Common Hybrid Combinations</h2>
+
+    <div class="structure-card">
+      <h2>Unit Trust with Corporate Trustee</h2>
+      <p>
+        A unit trust managed by a company trustee. Combines the fixed entitlements and CGT discount of unit trusts with the limited liability protection of a corporate trustee. The trustee company has no assets beyond its role as trustee, protecting directors from personal liability.
+      </p>
+      <div class="info-grid">
+        <div class="info-item">
+          <h4>Best For</h4>
+          <p>Joint ventures needing trustee liability protection and fixed profit shares.</p>
+        </div>
+        <div class="info-item">
+          <h4>Key Benefit</h4>
+          <p>Trustee liability limited to corporate assets while unit holders retain CGT discount.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="structure-card">
+      <h2>SPV Held by Family Trust</h2>
+      <p>
+        A special purpose vehicle (company) with shares held by a discretionary family trust rather than individuals. The SPV conducts the development with limited liability, while profits ultimately flow to the trust for flexible distribution among family beneficiaries.
+      </p>
+      <div class="info-grid">
+        <div class="info-item">
+          <h4>Best For</h4>
+          <p>Single projects where family tax flexibility is desired alongside project ring-fencing.</p>
+        </div>
+        <div class="info-item">
+          <h4>Key Benefit</h4>
+          <p>Project liability contained in SPV; trust provides distribution flexibility.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="structure-card">
+      <h2>Unit Trust with Discretionary Trust Unit Holders</h2>
+      <p>
+        A unit trust where each unit holder is itself a discretionary family trust. The unit trust governs the relationship between JV parties (fixed entitlements), while each party's trust manages their family's tax position (flexible distribution).
+      </p>
+      <div class="info-grid">
+        <div class="info-item">
+          <h4>Best For</h4>
+          <p>Joint ventures between families wanting both certainty and tax flexibility.</p>
+        </div>
+        <div class="info-item">
+          <h4>Key Benefit</h4>
+          <p>Clear JV entitlements; each family optimises their own tax independently.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-box">
+      <h4>Strategic Approach: The "Development Company + Holding Trust" Split</h4>
+      <p>
+        Use a company to conduct development activities (trading income taxed at company rate, liability contained), but have a discretionary trust hold completed investment properties (rental income distributed flexibly, CGT discount on eventual sale). Development profits retained in the company fund the next project; stabilised assets transfer to the trust for long-term family wealth.
+      </p>
+    </div>
+
+    <div class="page-footer">
+      <span>CALDON™</span>
+      <span>8</span>
+    </div>
+  </div>
+
+  <!-- Page 9: Comparison -->
+  <div class="page">
+    <div class="page-header">
+      <img src="/logo.png" alt="CALDON™" class="page-header-logo">
+      <span class="page-header-title">Structure Comparison</span>
+    </div>
+
+    <p class="section-label">At a Glance</p>
+    <h1>Comparing the Structures</h1>
+    
+    <p class="lead">
+      Each structure has distinct characteristics that make it suitable for different circumstances. This comparison highlights the key differences to help identify which structure—or combination—might suit your situation.
+    </p>
+
+    <table class="comparison-table">
+      <tr>
+        <th style="width: 16%;">Structure</th>
+        <th style="width: 14%;">Tax Rate</th>
+        <th style="width: 12%;">CGT Discount</th>
+        <th style="width: 14%;">Asset Protection</th>
+        <th style="width: 14%;">Flexibility</th>
+        <th style="width: 16%;">Best For</th>
+      </tr>
+      <tr>
+        <td><strong>SPV</strong></td>
+        <td>25-30%</td>
+        <td>No</td>
+        <td>Excellent</td>
+        <td>High (exit)</td>
+        <td>Single projects, JVs</td>
+      </tr>
+      <tr>
+        <td><strong>Company</strong></td>
+        <td>25-30%</td>
+        <td>No</td>
+        <td>Excellent</td>
+        <td>Medium</td>
+        <td>Multiple projects</td>
+      </tr>
+      <tr>
+        <td><strong>Discretionary Trust</strong></td>
+        <td>Beneficiary rates</td>
+        <td>Yes (50%)</td>
+        <td>Very Good</td>
+        <td>Very High</td>
+        <td>Family structures</td>
+      </tr>
+      <tr>
+        <td><strong>Unit Trust</strong></td>
+        <td>Unit holder rates</td>
+        <td>Yes (50%)</td>
+        <td>Good</td>
+        <td>Medium</td>
+        <td>Fixed JVs</td>
+      </tr>
+      <tr>
+        <td><strong>SMSF</strong></td>
+        <td>15% / 10% / 0%</td>
+        <td>Reduced rate</td>
+        <td>Excellent</td>
+        <td>Low</td>
+        <td>Retirement strategy</td>
+      </tr>
+      <tr>
+        <td><strong>Hybrid</strong></td>
+        <td>Varies</td>
+        <td>Varies</td>
+        <td>Excellent</td>
+        <td>High</td>
+        <td>Complex needs</td>
+      </tr>
+    </table>
+
+    <div class="divider"></div>
+
+    <h2>Decision Framework</h2>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <h4>Single Project, Solo Investor</h4>
+        <p>Discretionary trust (family) or SPV held by trust. Maximises flexibility and CGT discount while containing liability.</p>
+      </div>
+      <div class="info-item">
+        <h4>Single Project, JV Partners</h4>
+        <p>Unit trust or SPV with defined shareholdings. Clear entitlements, contained liability, clean exit options.</p>
+      </div>
+      <div class="info-item">
+        <h4>Multiple Projects, Reinvestment</h4>
+        <p>Company structure with profits retained. Flat tax rate, perpetual existence, builds track record.</p>
+      </div>
+      <div class="info-item">
+        <h4>Long-Term Hold, Retirement Focus</h4>
+        <p>SMSF (with appropriate advice). Concessional rates compound; tax-free in pension phase.</p>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <h3>The Right Structure Depends On</h3>
+      <p>
+        Your personal tax position • Number of investors involved • Relationship between parties • Exit strategy and timeline • Asset protection needs • Estate planning objectives • Existing structures and entities • Financing requirements • State-specific land tax implications
+      </p>
+    </div>
+
+    <div class="page-footer">
+      <span>CALDON™</span>
+      <span>9</span>
+    </div>
+  </div>
+
+  <!-- Page 10: Advanced Strategies -->
+  <div class="page">
+    <div class="page-header">
+      <img src="/logo.png" alt="CALDON™" class="page-header-logo">
+      <span class="page-header-title">Advanced Strategies</span>
+    </div>
+
+    <p class="section-label">Maximising Returns</p>
+    <h1>Strategic Structuring Approaches</h1>
+    
+    <p class="lead">
+      Beyond choosing the right entity, sophisticated structuring can significantly enhance after-tax returns. These strategies are used by experienced developers and high-net-worth investors—always with appropriate professional advice.
+    </p>
+
+    <div class="structure-card">
+      <h2>1. The Profit Split Structure</h2>
+      <p>
+        Separate land ownership from development activity. A passive entity (trust) holds the land and receives a "land owner's profit" while an active entity (company) conducts the development and receives a "developer's margin." This can allocate more profit to the structure with better tax characteristics for that income type.
+      </p>
+      <span class="tag">Tax Efficiency</span>
+      <span class="tag">Risk Management</span>
+    </div>
+
+    <div class="structure-card">
+      <h2>2. The Pre-Sale CGT Strategy</h2>
+      <p>
+        For projects held long enough to qualify for CGT discount (12+ months), timing the contract date is critical. Exchange contracts after the 12-month threshold even if settlement occurs later. For trusts, ensure the capital gain is properly "streamed" to beneficiaries who can best utilise the discount.
+      </p>
+      <span class="tag">CGT Planning</span>
+      <span class="tag">Timing</span>
+    </div>
+
+    <div class="structure-card">
+      <h2>3. The Debt Recycling Approach</h2>
+      <p>
+        Use development profits to pay down non-deductible personal debt (home mortgage), then reborrow against the property for the next investment. Over time, all debt becomes deductible investment debt. The structure holding investments should be the borrower, making interest tax-deductible.
+      </p>
+      <span class="tag">Interest Deductions</span>
+      <span class="tag">Wealth Building</span>
+    </div>
+
+    <div class="structure-card">
+      <h2>4. The Family Employment Strategy</h2>
+      <p>
+        Where family members genuinely contribute to the development (administration, project oversight, sales), employ them through the development entity. Wages are tax-deductible to the entity and taxed at the employee's marginal rate—potentially much lower. Must reflect genuine work at market rates.
+      </p>
+      <span class="tag">Income Splitting</span>
+      <span class="tag">Deductions</span>
+    </div>
+
+    <div class="structure-card">
+      <h2>5. The Margin Scheme for GST</h2>
+      <p>
+        When selling residential property, the GST margin scheme calculates GST only on the "margin" (sale price minus original purchase price) rather than the full sale price. This can significantly reduce GST liability. Must be elected correctly and requires specific contract clauses.
+      </p>
+      <span class="tag">GST Minimisation</span>
+      <span class="tag">Residential Sales</span>
+    </div>
+
+    <div class="warning-box">
+      <p><strong>Professional Advice Essential:</strong> These strategies involve complex tax law and must be implemented correctly to be effective. Anti-avoidance provisions can apply to arrangements lacking commercial substance or entered into primarily for tax benefits. Always work with qualified tax advisers and ensure arrangements have genuine commercial rationale beyond tax outcomes.</p>
+    </div>
+
+    <div class="page-footer">
+      <span>CALDON™</span>
+      <span>10</span>
+    </div>
+  </div>
+
+  <!-- Page 11: Checklist -->
+  <div class="page">
+    <div class="page-header">
+      <img src="/logo.png" alt="CALDON™" class="page-header-logo">
+      <span class="page-header-title">Implementation Checklist</span>
+    </div>
+
+    <p class="section-label">Getting Started</p>
+    <h1>Structure Implementation Checklist</h1>
+    
+    <p class="lead">
+      Before committing to a structure, work through these considerations with your professional advisers. Getting the structure right before acquiring the property is essential—restructuring later is often costly or impossible.
+    </p>
+
+    <div class="two-col">
+      <div>
+        <h2>Before You Structure</h2>
+        <div class="checklist">
+          <div class="checklist-item">Define your investment objectives clearly</div>
+          <div class="checklist-item">Determine your exit strategy (sell, hold, refinance)</div>
+          <div class="checklist-item">Identify all parties involved and their roles</div>
+          <div class="checklist-item">Assess your current tax position and that of family members</div>
+          <div class="checklist-item">Review existing structures that might be utilised</div>
+          <div class="checklist-item">Consider asset protection requirements</div>
+          <div class="checklist-item">Evaluate financing needs and lender requirements</div>
+          <div class="checklist-item">Understand state-specific stamp duty and land tax implications</div>
+        </div>
+
+        <h2 style="margin-top: 4mm;">Professional Team</h2>
+        <div class="checklist">
+          <div class="checklist-item">Engage accountant with property development experience</div>
+          <div class="checklist-item">Brief solicitor on proposed structure</div>
+          <div class="checklist-item">Consult financial planner if SMSF involved</div>
+          <div class="checklist-item">Discuss with lender/broker early</div>
+          <div class="checklist-item">Obtain written advice documenting rationale</div>
+        </div>
+      </div>
+      <div>
+        <h2>Structure Setup</h2>
+        <div class="checklist">
+          <div class="checklist-item">Register company/trust before any commitments</div>
+          <div class="checklist-item">Obtain ABN and register for GST if required</div>
+          <div class="checklist-item">Open dedicated bank accounts</div>
+          <div class="checklist-item">Document all shareholder/unit holder agreements</div>
+          <div class="checklist-item">Establish clear decision-making protocols</div>
+          <div class="checklist-item">Set up accounting systems and chart of accounts</div>
+          <div class="checklist-item">Brief all parties on their roles and obligations</div>
+          <div class="checklist-item">Ensure contracts are signed by correct entity</div>
+        </div>
+
+        <h2 style="margin-top: 4mm;">Ongoing Compliance</h2>
+        <div class="checklist">
+          <div class="checklist-item">Annual company returns and ASIC fees</div>
+          <div class="checklist-item">Trust distribution resolutions before 30 June</div>
+          <div class="checklist-item">BAS lodgement (monthly or quarterly)</div>
+          <div class="checklist-item">Annual tax returns for all entities</div>
+          <div class="checklist-item">Land tax assessments and payments</div>
+          <div class="checklist-item">SMSF audit requirements (if applicable)</div>
+          <div class="checklist-item">Maintain corporate records and minutes</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <h3>Common Mistakes to Avoid</h3>
+      <p>
+        Signing contracts personally before structure is established • Failing to distribute trust income by 30 June • Division 7A breaches on shareholder loans • Incorrect GST treatment on property sales • Land tax grouping provisions triggered inadvertently • Using LRBA for development activities • Mixing personal and entity funds
+      </p>
+    </div>
+
+    <div class="page-footer">
+      <span>CALDON™</span>
+      <span>11</span>
+    </div>
+  </div>
+
+  <!-- Page 12: Summary / Contact -->
+  <div class="page">
+    <div class="page-header">
+      <img src="/logo.png" alt="CALDON™" class="page-header-logo">
+      <span class="page-header-title">Summary</span>
+    </div>
+
+    <p class="section-label">Conclusion</p>
+    <h1>Structuring for Success</h1>
+    
+    <p class="lead">
+      The right investment structure provides the foundation for a successful development. It determines how profits are taxed, how risks are contained, and how flexibly you can respond to changing circumstances. Getting it wrong can cost hundreds of thousands of dollars over the life of a project.
+    </p>
+
+    <div class="two-col">
+      <div>
+        <h2>Key Takeaways</h2>
+        <p>
+          <strong>Structure before you commit.</strong> Establish the right entity before signing any contracts or paying deposits. Restructuring later triggers stamp duty, CGT, and complexity.
+        </p>
+        <p>
+          <strong>Match structure to strategy.</strong> Your exit plan should drive your structure choice. A long-term hold has different needs than a build-and-sell project.
+        </p>
+        <p>
+          <strong>Consider the whole picture.</strong> Tax efficiency matters, but so do asset protection, estate planning, financing, and simplicity. Don't over-engineer.
+        </p>
+        <p>
+          <strong>Get professional advice.</strong> Every situation is different. The cost of proper advice is negligible compared to the cost of getting it wrong.
+        </p>
+      </div>
+      <div>
+        <h2>Working With CALDON™</h2>
+        <p>
+          At CALDON™, we work with investors across all structure types. We understand the practical implications of different structures for development projects and coordinate with your professional advisers to ensure the project is set up correctly from day one.
+        </p>
+        <p>
+          Our in-house team handles project management, construction management, architecture, quantity surveying, and DA administration—but we always recommend investors have their own independent accountant and solicitor providing structure advice specific to their circumstances.
+        </p>
+        <p>
+          If you don't have established advisory relationships, we can connect you with professionals experienced in property development structuring.
+        </p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div style="background: #0a0a0a; color: #ffffff; padding: 6mm; text-align: center; margin-top: 4mm;">
+      <p style="font-size: 6pt; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: #888888; margin-bottom: 2mm;">Start a Conversation</p>
+      <p style="font-family: 'Cormorant Garamond', serif; font-size: 14pt; color: #ffffff; margin-bottom: 3mm;">Ready to discuss your next project?</p>
+      <p style="font-size: 8.5pt; color: #999999; margin-bottom: 4mm;">We're happy to discuss how different structures might work for your specific situation.</p>
+      <p style="font-family: 'Cormorant Garamond', serif; font-size: 12pt; color: #ffffff; margin-bottom: 1mm;">invest@caldon.com.au</p>
+      <p style="font-size: 8pt; color: #888888;">www.caldon.com.au</p>
+    </div>
+
+    <div class="page-footer">
+      <span>CALDON™</span>
+      <span>12</span>
+    </div>
+  </div>
+
+  <!-- Page 13: Back Cover -->
+  <div class="page cover">
+    <img src="/logo.png" alt="CALDON™" class="cover-logo" style="width: 120px; margin-bottom: 0;">
+    <div class="cover-footer">
+      invest@caldon.com.au · www.caldon.com.au
+    </div>
+  </div>
+
+</body>
+</html>

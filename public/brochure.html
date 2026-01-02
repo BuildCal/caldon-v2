@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CALDON™ — Development Partnership</title>
+  <title>CALDON™ — Investor Partnership Overview</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -19,11 +19,40 @@
       box-sizing: border-box;
     }
 
+    /* PDF Download Button */
+    .download-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a1a1a;
+      color: #ffffff;
+      padding: 12px 20px;
+      font-family: 'Inter', sans-serif;
+      font-size: 9pt;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      z-index: 1000;
+      transition: background 0.2s ease;
+    }
+
+    .download-btn:hover {
+      background: #333333;
+    }
+
+    @media print {
+      .download-btn {
+        display: none;
+      }
+    }
+
     html, body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      font-size: 10pt;
+      font-size: 9pt;
       line-height: 1.5;
-      color: #0a0a0a;
+      color: #1a1a1a;
       background: #ffffff;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
@@ -32,11 +61,12 @@
     .page {
       width: 210mm;
       height: 297mm;
-      padding: 18mm;
+      padding: 15mm 18mm 18mm 18mm;
       margin: 0 auto;
       background: #ffffff;
       position: relative;
       page-break-after: always;
+      page-break-inside: avoid;
       overflow: hidden;
     }
 
@@ -53,28 +83,42 @@
       align-items: center;
       text-align: center;
       color: #ffffff;
+      padding: 40mm;
     }
 
     .cover-logo {
-      width: 160px;
-      margin-bottom: 32px;
+      width: 240px;
+      margin-bottom: 45px;
       filter: brightness(0) invert(1);
     }
 
     .cover-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 26pt;
+      font-size: 24pt;
       font-weight: 300;
       letter-spacing: 0.02em;
       line-height: 1.3;
       margin-bottom: 12px;
+      max-width: 360px;
     }
 
     .cover-subtitle {
-      font-size: 10pt;
+      font-size: 8pt;
       font-weight: 300;
-      color: #a0a0a0;
-      letter-spacing: 0.05em;
+      color: #999999;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 50px;
+    }
+
+    .cover-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11pt;
+      font-weight: 300;
+      font-style: italic;
+      color: #888888;
+      max-width: 280px;
+      line-height: 1.5;
     }
 
     .cover-footer {
@@ -83,8 +127,9 @@
       left: 18mm;
       right: 18mm;
       text-align: center;
-      font-size: 8pt;
+      font-size: 7.5pt;
       color: #666666;
+      letter-spacing: 0.05em;
     }
 
     /* Page Header */
@@ -92,141 +137,167 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12mm;
-      padding-bottom: 4mm;
-      border-bottom: 1px solid #e5e5e5;
+      margin-bottom: 6mm;
+      padding-bottom: 2.5mm;
+      border-bottom: 1px solid #e8e8e8;
     }
 
     .page-header-logo {
-      height: 20px;
+      height: 28px;
     }
 
     .page-header-title {
-      font-size: 7pt;
+      font-size: 6.5pt;
       font-weight: 400;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: #858585;
+      color: #888888;
     }
 
     /* Typography */
     h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 22pt;
+      font-size: 18pt;
       font-weight: 300;
-      color: #0a0a0a;
-      margin-bottom: 6mm;
+      color: #1a1a1a;
+      margin-bottom: 3mm;
       line-height: 1.2;
     }
 
     h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 14pt;
+      font-size: 12pt;
       font-weight: 400;
-      color: #0a0a0a;
-      margin-bottom: 4mm;
-      margin-top: 8mm;
+      color: #1a1a1a;
+      margin-bottom: 2.5mm;
+      margin-top: 4mm;
     }
 
     h3 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 11pt;
+      font-size: 10pt;
       font-weight: 400;
-      color: #0a0a0a;
-      margin-bottom: 2mm;
+      color: #1a1a1a;
+      margin-bottom: 1.5mm;
     }
 
     p {
-      margin-bottom: 3mm;
-      color: #525252;
+      margin-bottom: 2mm;
+      color: #4a4a4a;
+      font-size: 8.5pt;
     }
 
     .lead {
-      font-size: 11pt;
+      font-size: 9.5pt;
       line-height: 1.6;
-      color: #525252;
-      margin-bottom: 8mm;
+      color: #4a4a4a;
+      margin-bottom: 4mm;
     }
 
     .section-label {
-      font-size: 7pt;
-      font-weight: 400;
+      font-size: 6pt;
+      font-weight: 500;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: #858585;
-      margin-bottom: 2mm;
+      color: #888888;
+      margin-bottom: 1mm;
     }
 
     /* Two Column Layout */
     .two-col {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8mm;
+      gap: 5mm;
     }
 
-    .three-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 6mm;
+    /* Content Block */
+    .content-block {
+      margin-bottom: 3mm;
     }
 
-    /* Value Props */
-    .value-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4mm;
-      margin-top: 6mm;
+    .content-block p {
+      font-size: 8.5pt;
+      line-height: 1.55;
     }
 
-    .value-item {
+    /* Quote Box */
+    .quote-box {
+      background: #f8f8f8;
       padding: 4mm;
-      border-left: 2px solid #0a0a0a;
+      margin: 4mm 0;
+      border-left: 2px solid #1a1a1a;
     }
 
-    .value-item h3 {
-      margin-bottom: 1mm;
+    .quote-box p {
+      font-family: 'Cormorant Garamond', serif;
       font-size: 10pt;
-    }
-
-    .value-item p {
-      font-size: 9pt;
+      font-weight: 300;
+      font-style: italic;
+      color: #1a1a1a;
+      line-height: 1.45;
       margin: 0;
-      line-height: 1.5;
     }
 
     /* Highlight Box */
     .highlight-box {
       background: #0a0a0a;
       color: #ffffff;
-      padding: 6mm;
-      margin: 6mm 0;
+      padding: 4mm;
+      margin: 4mm 0;
+    }
+
+    .highlight-box h3 {
+      color: #ffffff;
+      margin-bottom: 1.5mm;
+      font-size: 9.5pt;
     }
 
     .highlight-box p {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 12pt;
-      font-weight: 300;
-      font-style: italic;
-      color: #ffffff;
-      text-align: center;
-      line-height: 1.5;
+      font-size: 8.5pt;
+      color: #cccccc;
       margin: 0;
+      line-height: 1.5;
     }
 
     /* Divider */
     .divider {
       height: 1px;
-      background: #e5e5e5;
-      margin: 6mm 0;
+      background: #e8e8e8;
+      margin: 4mm 0;
+    }
+
+    /* Value Props */
+    .value-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm;
+      margin-top: 3mm;
+    }
+
+    .value-item {
+      padding: 3mm;
+      border-left: 2px solid #1a1a1a;
+      background: #fafafa;
+    }
+
+    .value-item h3 {
+      margin-bottom: 1mm;
+      font-size: 9pt;
+    }
+
+    .value-item p {
+      font-size: 8pt;
+      margin: 0;
+      line-height: 1.45;
     }
 
     /* Process Steps */
     .process-step {
       display: grid;
-      grid-template-columns: 12mm 1fr;
-      gap: 4mm;
-      margin-bottom: 5mm;
-      padding-bottom: 5mm;
+      grid-template-columns: 10mm 1fr;
+      gap: 3mm;
+      margin-bottom: 3mm;
+      padding-bottom: 3mm;
       border-bottom: 1px solid #f0f0f0;
     }
 
@@ -238,30 +309,37 @@
 
     .step-number {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 20pt;
+      font-size: 18pt;
       font-weight: 300;
       color: #e0e0e0;
       line-height: 1;
     }
 
     .step-content h3 {
-      margin-bottom: 1mm;
-      font-size: 10pt;
+      margin-bottom: 0.5mm;
+      font-size: 9pt;
     }
 
     .step-content p {
-      font-size: 9pt;
+      font-size: 8pt;
       margin-bottom: 0;
       line-height: 1.5;
+    }
+
+    .step-deliverables {
+      font-size: 7pt;
+      color: #888888;
+      margin-top: 1mm;
+      font-style: italic;
     }
 
     /* Fee Items */
     .fee-item {
       display: grid;
-      grid-template-columns: 22mm 1fr;
-      gap: 4mm;
-      margin-bottom: 4mm;
-      padding-bottom: 4mm;
+      grid-template-columns: 20mm 1fr;
+      gap: 3mm;
+      margin-bottom: 3mm;
+      padding-bottom: 3mm;
       border-bottom: 1px solid #f0f0f0;
     }
 
@@ -270,178 +348,315 @@
     }
 
     .fee-label {
-      font-size: 7pt;
-      font-weight: 400;
+      font-size: 6pt;
+      font-weight: 500;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #858585;
+      color: #888888;
     }
 
-    .fee-amount {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 16pt;
-      font-weight: 300;
-      color: #0a0a0a;
-      line-height: 1;
-      margin-top: 1mm;
+    .fee-trigger {
+      font-size: 8pt;
+      color: #1a1a1a;
+      margin-top: 0.5mm;
     }
 
     .fee-description {
-      font-size: 9pt;
-      color: #525252;
+      font-size: 8pt;
+      color: #4a4a4a;
       line-height: 1.5;
     }
 
     .fee-description strong {
-      color: #0a0a0a;
+      color: #1a1a1a;
     }
 
-    /* Summary Box */
-    .summary-box {
-      background: #0a0a0a;
-      color: #ffffff;
-      padding: 5mm;
-      margin-top: 6mm;
+    /* Timeline Items */
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 20mm 1fr;
+      gap: 3mm;
+      margin-bottom: 2.5mm;
+      padding-bottom: 2.5mm;
+      border-bottom: 1px solid #f0f0f0;
     }
 
-    .summary-box h3 {
-      color: #ffffff;
-      margin-bottom: 2mm;
-      font-size: 10pt;
+    .timeline-item:last-child {
+      border-bottom: none;
     }
 
-    .summary-box .amount {
-      font-size: 16pt;
-      color: #ffffff;
+    .timeline-duration {
       font-family: 'Cormorant Garamond', serif;
-      margin-bottom: 2mm;
+      font-size: 10pt;
+      color: #1a1a1a;
     }
 
-    .summary-box p {
+    .timeline-phase {
       font-size: 8pt;
+      color: #4a4a4a;
+      line-height: 1.45;
+    }
+
+    .timeline-phase strong {
+      color: #1a1a1a;
+    }
+
+    /* Risk Grid */
+    .risk-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm;
+      margin-top: 3mm;
+    }
+
+    .risk-item {
+      padding: 3mm;
+      background: #fafafa;
+    }
+
+    .risk-item h3 {
+      font-size: 9pt;
+      margin-bottom: 1mm;
+    }
+
+    .risk-item p {
+      font-size: 8pt;
+      line-height: 1.45;
       margin: 0;
-      color: #a0a0a0;
     }
 
     /* Team */
+    .team-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5mm;
+      margin-top: 3mm;
+    }
+
     .team-member {
-      text-align: center;
-      padding: 4mm;
+      padding: 3mm;
+      background: #fafafa;
     }
 
     .team-photo {
-      width: 22mm;
-      height: 22mm;
-      border-radius: 50%;
+      width: 40mm;
+      height: 40mm;
       background: #e5e5e5;
-      margin: 0 auto 3mm;
+      margin-bottom: 2.5mm;
     }
 
     .team-name {
       font-family: 'Cormorant Garamond', serif;
       font-size: 11pt;
       font-weight: 400;
-      color: #0a0a0a;
-      margin-bottom: 1mm;
+      color: #1a1a1a;
+      margin-bottom: 0.5mm;
     }
 
     .team-role {
-      font-size: 7pt;
-      font-weight: 400;
-      letter-spacing: 0.1em;
+      font-size: 6.5pt;
+      font-weight: 500;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #858585;
-      margin-bottom: 2mm;
+      color: #888888;
+      margin-bottom: 1mm;
     }
 
     .team-quals {
-      font-size: 8pt;
-      color: #525252;
-      font-style: italic;
+      font-size: 7.5pt;
+      color: #666666;
       margin-bottom: 2mm;
     }
 
-    .team-focus {
+    .team-bio {
       font-size: 8pt;
-      color: #525252;
-      line-height: 1.4;
+      color: #4a4a4a;
+      line-height: 1.5;
     }
 
-    /* Contact */
+    /* Consultant Grid */
+    .consultant-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2.5mm;
+      margin-top: 2.5mm;
+    }
+
+    .consultant-item {
+      padding: 2mm;
+      background: #fafafa;
+    }
+
+    .consultant-item h4 {
+      font-size: 8pt;
+      font-weight: 500;
+      color: #1a1a1a;
+      margin-bottom: 0.5mm;
+    }
+
+    .consultant-item p {
+      font-size: 7pt;
+      color: #666666;
+      margin: 0;
+      line-height: 1.35;
+    }
+
+    /* Structure Grid */
+    .structure-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 3mm;
+      margin-top: 3mm;
+    }
+
+    .structure-item {
+      padding: 2.5mm;
+      background: #fafafa;
+    }
+
+    .structure-item h3 {
+      font-size: 8.5pt;
+      margin-bottom: 1mm;
+    }
+
+    .structure-item p {
+      font-size: 7.5pt;
+      line-height: 1.4;
+      margin-bottom: 1mm;
+    }
+
+    .structure-item .note {
+      font-size: 6.5pt;
+      color: #888888;
+      font-style: italic;
+      margin: 0;
+    }
+
+    /* FAQ */
+    .faq-item {
+      margin-bottom: 3mm;
+      padding-bottom: 3mm;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .faq-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .faq-question {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10pt;
+      font-weight: 400;
+      color: #1a1a1a;
+      margin-bottom: 1mm;
+    }
+
+    .faq-answer {
+      font-size: 8pt;
+      color: #4a4a4a;
+      line-height: 1.5;
+    }
+
+    /* Checklist */
+    .checklist {
+      margin-top: 2mm;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 2mm;
+      margin-bottom: 1.5mm;
+      font-size: 8pt;
+      color: #4a4a4a;
+    }
+
+    .checklist-item::before {
+      content: "✓";
+      color: #1a1a1a;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    /* Comparison Table */
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 3mm;
+      font-size: 8pt;
+    }
+
+    .comparison-table th {
+      text-align: left;
+      padding: 2mm;
+      background: #f5f5f5;
+      font-weight: 500;
+      border-bottom: 1px solid #e8e8e8;
+      font-size: 7.5pt;
+    }
+
+    .comparison-table td {
+      padding: 2mm;
+      border-bottom: 1px solid #f0f0f0;
+      color: #4a4a4a;
+      font-size: 7.5pt;
+    }
+
+    .comparison-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Contact Block */
     .contact-block {
       background: #0a0a0a;
       color: #ffffff;
-      padding: 8mm;
+      padding: 5mm;
       text-align: center;
-      margin-top: 8mm;
+      margin-top: 4mm;
     }
 
     .contact-block .section-label {
-      color: #858585;
+      color: #888888;
     }
 
     .contact-block h2 {
       color: #ffffff;
-      margin-bottom: 3mm;
-      margin-top: 0;
-      font-size: 14pt;
+      margin-bottom: 2mm;
+      margin-top: 1mm;
+      font-size: 13pt;
     }
 
     .contact-block p {
-      color: #a0a0a0;
-      margin-bottom: 4mm;
-      font-size: 9pt;
+      color: #999999;
+      margin-bottom: 2.5mm;
+      font-size: 8.5pt;
     }
 
     .contact-email {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 14pt;
+      font-size: 12pt;
       color: #ffffff;
+      letter-spacing: 0.02em;
+    }
+
+    .contact-website {
+      font-size: 8pt;
+      color: #888888;
+      margin-top: 1mm;
     }
 
     /* Page Footer */
     .page-footer {
       position: absolute;
-      bottom: 12mm;
+      bottom: 10mm;
       left: 18mm;
       right: 18mm;
       display: flex;
       justify-content: space-between;
-      font-size: 7pt;
-      color: #a0a0a0;
-    }
-
-    /* Full Service Box */
-    .full-service {
-      margin-top: 6mm;
-      padding-top: 5mm;
-      border-top: 1px solid #e5e5e5;
-    }
-
-    .full-service h3 {
-      font-size: 10pt;
-      margin-bottom: 2mm;
-    }
-
-    .full-service p {
-      font-size: 9pt;
-      margin: 0;
-    }
-
-    /* Advisers Section */
-    .advisers-section {
-      margin-top: 8mm;
-      padding-top: 6mm;
-      border-top: 1px solid #e5e5e5;
-    }
-
-    .advisers-section h2 {
-      margin-top: 0;
-      font-size: 12pt;
-    }
-
-    .advisers-section p {
-      font-size: 9pt;
+      font-size: 6.5pt;
+      color: #aaaaaa;
     }
 
     /* Print Styles */
@@ -453,6 +668,8 @@
       .page {
         margin: 0;
         box-shadow: none;
+        page-break-after: always;
+        page-break-inside: avoid;
       }
     }
 
@@ -472,65 +689,64 @@
 </head>
 <body>
 
+  <button class="download-btn" onclick="window.print()">Download PDF</button>
+
   <!-- Page 1: Cover -->
   <div class="page cover">
     <img src="/logo.png" alt="CALDON™" class="cover-logo">
-    <h1 class="cover-title">Private Development Partnership<br>for Select Investors</h1>
-    <p class="cover-subtitle">New South Wales</p>
+    <p class="cover-subtitle">New South Wales Property Development Partnership</p>
+    <p class="cover-tagline">"Every site has potential. Few have the expertise to realise it."</p>
     <div class="cover-footer">
-      Confidential · For Prospective Partners Only
+      invest@caldon.com.au · www.caldon.com.au
     </div>
   </div>
 
-  <!-- Page 2: The Partnership -->
+  <!-- Page 2: Executive Summary -->
   <div class="page">
     <div class="page-header">
       <img src="/logo.png" alt="CALDON™" class="page-header-logo">
-      <span class="page-header-title">Development Partnership</span>
+      <span class="page-header-title">Executive Summary</span>
     </div>
 
-    <p class="section-label">The Partnership</p>
-    <h1>Capital Deployment Without the Operational Burden</h1>
+    <p class="section-label">Overview</p>
+    <h1>What We Do</h1>
     
     <p class="lead">
-      You have capital to deploy and a business to run. We identify opportunities, structure acquisitions, manage approvals, coordinate construction, and deliver returns — so you don't have to.
+      CALDON™ partners with investors who want property development returns without the operational burden of managing a project themselves. You provide the capital. We provide the expertise. You retain ownership of the asset.
     </p>
 
-    <div class="highlight-box">
-      <p>"We exist to give sophisticated investors access to development returns without the operational burden of managing a project themselves."</p>
-    </div>
-
-    <div class="value-grid">
-      <div class="value-item">
-        <h3>Deal Flow</h3>
-        <p>Continuous pipeline of assessed opportunities across our target markets. Qualified partners receive first access to projects meeting their criteria.</p>
-      </div>
-      <div class="value-item">
-        <h3>Full Execution</h3>
-        <p>Dedicated capability across design, quantity surveying, project management, and construction. One team, one point of contact, complete accountability.</p>
-      </div>
-      <div class="value-item">
-        <h3>Structured Reporting</h3>
-        <p>Quarterly progress reports, financial summaries, and direct access to your project lead. No chasing. No surprises.</p>
-      </div>
-      <div class="value-item">
-        <h3>Flexible Exit</h3>
-        <p>Hold, lease, sell, or refinance. We coordinate with your advisers to optimise the outcome based on your objectives.</p>
-      </div>
-    </div>
+    <p>
+      We identify development opportunities, manage feasibility, coordinate design and approvals, oversee construction, and deliver completed assets to investors. All core functions—architecture and design, project management, construction management, quantity surveying, and DA administration—are handled in-house by our expert team. Our role is to handle everything that sits between finding a site and handing you the keys to a finished building.
+    </p>
+    <p>
+      This model works because most investors don't have the time, relationships, or technical knowledge to run a development themselves—but they understand property and want exposure to development margins without the operational complexity.
+    </p>
 
     <div class="divider"></div>
 
-    <h2>What Sets Us Apart</h2>
-    <div class="two-col">
-      <div>
-        <h3>Integrated Team</h3>
-        <p>Architecture, quantity surveying, project management, and construction expertise under one roof. Single point of accountability.</p>
+    <h2>The Partnership Model</h2>
+    
+    <div class="value-grid">
+      <div class="value-item">
+        <h3>You Provide</h3>
+        <p>Capital for site acquisition, design, approvals, and construction. Typically $500,000 or more per project, depending on scale and structure.</p>
       </div>
-      <div>
-        <h3>Regional Expertise</h3>
-        <p>Deep knowledge of the Mid North Coast, Hunter, and Central Coast. Established relationships with councils, agents, and contractors.</p>
+      <div class="value-item">
+        <h3>We Provide</h3>
+        <p>In-house architecture and design, project management, construction management, quantity surveying, and DA administration—plus site identification, feasibility analysis, and tender oversight.</p>
       </div>
+      <div class="value-item">
+        <h3>You Receive</h3>
+        <p>A completed asset with all documentation, depreciation schedule, and the flexibility to hold, lease, sell, or refinance based on your objectives.</p>
+      </div>
+      <div class="value-item">
+        <h3>Your Involvement</h3>
+        <p>Decision-making at key milestones. Regular updates via our secure investor portal—track progress, view documents, and communicate with your project team anytime.</p>
+      </div>
+    </div>
+
+    <div class="quote-box">
+      <p>We become your development team. You don't need to source sites, negotiate with councils, manage consultants, or supervise builders. That's our job.</p>
     </div>
 
     <div class="page-footer">
@@ -539,67 +755,75 @@
     </div>
   </div>
 
-  <!-- Page 3: Process -->
+  <!-- Page 3: Why This Model -->
   <div class="page">
     <div class="page-header">
       <img src="/logo.png" alt="CALDON™" class="page-header-logo">
-      <span class="page-header-title">Engagement Structure</span>
+      <span class="page-header-title">The Opportunity</span>
     </div>
 
-    <p class="section-label">The Pathway</p>
-    <h1>How We Work Together</h1>
+    <p class="section-label">Market Context</p>
+    <h1>Why Development Partnership</h1>
     
     <p class="lead">
-      Our engagement is structured to align with how sophisticated investors operate — staged commitments, clear decision points, and full transparency before capital is deployed.
+      Property development offers returns that passive investment rarely matches. But most investors face a binary choice: take a passive role with limited upside, or take an active role without the expertise to execute well.
     </p>
 
-    <div class="process-step">
-      <span class="step-number">01</span>
-      <div class="step-content">
-        <h3>Private Consultation</h3>
-        <p>Confidential discussion to understand your investment objectives, risk appetite, return expectations, and preferred structures. No cost, no obligation.</p>
+    <div class="two-col">
+      <div class="content-block">
+        <h2>The Challenge for Investors</h2>
+        <p>
+          Business owners, professionals, and family offices often have capital to deploy but limited time. They understand property's fundamentals—tangible assets, rental income, capital growth—but development feels like a different discipline entirely.
+        </p>
+        <p>
+          Development requires planning expertise, construction knowledge, consultant management, and relationships that take years to build. The learning curve is steep, and the cost of mistakes is high.
+        </p>
+      </div>
+      <div class="content-block">
+        <h2>Where CALDON™ Fits</h2>
+        <p>
+          We bridge the gap between passive investment and active development. You bring capital and decision-making authority. We bring the technical capability, relationships, and execution experience.
+        </p>
+        <p>
+          This isn't a fund or a syndicate where your capital is pooled with others. You own your project outright. Our fee is for the service of managing your development—not for a share of your asset.
+        </p>
       </div>
     </div>
 
-    <div class="process-step">
-      <span class="step-number">02</span>
-      <div class="step-content">
-        <h3>Strategy & Site Identification</h3>
-        <p>We develop a tailored investment strategy and identify sites aligned with your criteria. Market analysis, risk assessment, and site reports provided.</p>
-      </div>
-    </div>
+    <div class="divider"></div>
 
-    <div class="process-step">
-      <span class="step-number">03</span>
-      <div class="step-content">
-        <h3>Option & Feasibility</h3>
-        <p>We negotiate vendor terms and secure the opportunity through option agreement. Concept plans and detailed feasibility prepared before you commit further.</p>
-      </div>
-    </div>
+    <h2>What Development Returns Look Like</h2>
 
-    <div class="process-step">
-      <span class="step-number">04</span>
-      <div class="step-content">
-        <h3>Design & Acquisition</h3>
-        <p>Detailed design development, consultant coordination, and site acquisition. Full documentation to DA-ready status with final construction costing.</p>
-      </div>
-    </div>
+    <table class="comparison-table">
+      <tr>
+        <th>Investment Type</th>
+        <th>Typical Returns</th>
+        <th>Time Horizon</th>
+        <th>Your Role</th>
+      </tr>
+      <tr>
+        <td>Established residential</td>
+        <td>3-5% yield + capital growth</td>
+        <td>Hold indefinitely</td>
+        <td>Passive owner</td>
+      </tr>
+      <tr>
+        <td>Commercial property</td>
+        <td>5-7% yield + growth</td>
+        <td>Hold indefinitely</td>
+        <td>Passive owner</td>
+      </tr>
+      <tr>
+        <td>Property development</td>
+        <td>15-30% return on equity</td>
+        <td>18-36 months</td>
+        <td>Capital partner</td>
+      </tr>
+    </table>
 
-    <div class="process-step">
-      <span class="step-number">05</span>
-      <div class="step-content">
-        <h3>Approvals & Tender</h3>
-        <p>DA lodgement and management through to determination. Builder engagement, tender assessment, and contract award.</p>
-      </div>
-    </div>
-
-    <div class="process-step">
-      <span class="step-number">06</span>
-      <div class="step-content">
-        <h3>Delivery & Completion</h3>
-        <p>Client-side project management throughout construction. Progress monitoring, quality oversight, and handover coordination.</p>
-      </div>
-    </div>
+    <p style="font-size: 7pt; color: #888888; margin-top: 2mm; font-style: italic;">
+      Returns are indicative and depend on individual project characteristics. Past performance does not guarantee future results. Development returns are driven by planning uplift, cost control, and execution discipline—not speculation or leverage.
+    </p>
 
     <div class="page-footer">
       <span>CALDON™</span>
@@ -607,95 +831,69 @@
     </div>
   </div>
 
-  <!-- Page 4: Fee Structure -->
+  <!-- Page 4: Our Focus -->
   <div class="page">
     <div class="page-header">
       <img src="/logo.png" alt="CALDON™" class="page-header-logo">
-      <span class="page-header-title">Fee Structure</span>
+      <span class="page-header-title">Our Focus</span>
     </div>
 
-    <p class="section-label">Investment</p>
-    <h1>Transparent, Staged Fees</h1>
+    <p class="section-label">Markets & Projects</p>
+    <h1>Where We Work</h1>
     
     <p class="lead">
-      Our fees are tied to project milestones. Staged payments mean you're never overcommitted — each phase delivers tangible value before the next payment is due.
+      We focus on regional and metropolitan New South Wales, with particular depth across the Mid North Coast, Hunter Valley, and Central Coast. These are markets we know—where we have relationships with agents, councils, and contractors.
     </p>
 
-    <div class="fee-item">
-      <div>
-        <p class="fee-label">Initial</p>
-        <p class="fee-amount">No Cost</p>
+    <div class="two-col">
+      <div class="content-block">
+        <h2>Why Regional NSW</h2>
+        <p>
+          Regional markets often present better value than Sydney—lower entry costs, less competition from institutional developers, and strong fundamentals driven by population growth, infrastructure investment, and lifestyle migration.
+        </p>
+        <p>
+          Our local knowledge gives us an edge in identifying opportunities before they hit the open market, understanding what councils will approve, and managing projects with contractors we've worked with for years.
+        </p>
       </div>
-      <div class="fee-description">
-        <strong>Private Consultation</strong><br>
-        Introductory meeting to understand your objectives and assess fit. No obligation.
-      </div>
-    </div>
-
-    <div class="fee-item">
-      <div>
-        <p class="fee-label">Stage 1</p>
-        <p class="fee-amount">POA</p>
-      </div>
-      <div class="fee-description">
-        <strong>Preliminary Agreement</strong><br>
-        Payable following initial discussions. Covers strategy, site identification, option negotiation, concept design, and feasibility. Deducted from total Project Fee.
-      </div>
-    </div>
-
-    <div class="fee-item">
-      <div>
-        <p class="fee-label">Stage 2</p>
-        <p class="fee-amount">POA</p>
-      </div>
-      <div class="fee-description">
-        <strong>Design & Acquisition</strong><br>
-        Payable once project costs are established. Covers detailed design, engineering, consultant coordination, and site acquisition. Deducted from total Project Fee.
+      <div class="content-block">
+        <h2>Project Types</h2>
+        <p>
+          We work across residential, commercial, mixed-use developments, and land subdivisions. Project scale typically starts from $1 million in total development value (for example, a duplex), with no upper limit for the right opportunity.
+        </p>
+        <p>
+          Examples include duplex developments, townhouses, boutique apartments, commercial buildings, land subdivision projects, and adaptive reuse. We're selective—we don't pursue volume.
+        </p>
       </div>
     </div>
 
-    <div class="fee-item">
-      <div>
-        <p class="fee-label">Stage 3</p>
-        <p class="fee-amount">POA</p>
+    <div class="divider"></div>
+
+    <h2>What Makes a Good Opportunity</h2>
+    
+    <div class="value-grid">
+      <div class="value-item">
+        <h3>Planning Potential</h3>
+        <p>Sites where zoning, height limits, and council policy support the proposed development. We don't speculate on rezoning.</p>
       </div>
-      <div class="fee-description">
-        <strong>Approvals & Tender</strong><br>
-        Payable upon DA approval. Covers tender preparation, builder engagement, and contract award. Deducted from total Project Fee.
+      <div class="value-item">
+        <h3>Market Demand</h3>
+        <p>End products that have demonstrated demand—whether for sale or lease. We don't build for a market that doesn't exist.</p>
+      </div>
+      <div class="value-item">
+        <h3>Feasibility Margin</h3>
+        <p>Projects where the numbers work with conservative assumptions. We build in contingency and don't rely on best-case scenarios.</p>
+      </div>
+      <div class="value-item">
+        <h3>Execution Clarity</h3>
+        <p>Clear path from acquisition to completion. No fundamental unknowns that could derail the project mid-way through.</p>
       </div>
     </div>
 
-    <div class="fee-item">
-      <div>
-        <p class="fee-label">Stage 4</p>
-        <p class="fee-amount">Balance</p>
-      </div>
-      <div class="fee-description">
-        <strong>CC Issued & Builder Awarded</strong><br>
-        Remaining Project Fee payable upon Construction Certificate issued and builder contract executed.
-      </div>
-    </div>
-
-    <div class="fee-item">
-      <div>
-        <p class="fee-label">PM Fee</p>
-        <p class="fee-amount">Separate</p>
-      </div>
-      <div class="fee-description">
-        <strong>Client-Side Project Management</strong><br>
-        Ongoing management throughout construction — progress monitoring, variation assessment, quality oversight. Quoted based on project scale.
-      </div>
-    </div>
-
-    <div class="summary-box">
-      <h3>Total Project Fee</h3>
-      <p class="amount">~3% of total project value</p>
-      <p>All staged payments deducted from total. Final percentage confirmed prior to engagement.</p>
-    </div>
-
-    <div class="full-service">
-      <h3>Full-Service Delivery</h3>
-      <p>We manage the complete development lifecycle — from site sourcing through to project completion. Design, consultant, and statutory costs form part of the overall project budget and are managed entirely by our team.</p>
+    <div class="highlight-box">
+      <h3>Deal Flow</h3>
+      <p>
+        We maintain an active pipeline of opportunities across our target markets. When we identify a project that matches an investor's criteria, we present it directly.
+      </p>
     </div>
 
     <div class="page-footer">
@@ -704,7 +902,448 @@
     </div>
   </div>
 
-  <!-- Page 5: Team & Contact -->
+  <!-- Page 5: The Process -->
+  <div class="page">
+    <div class="page-header">
+      <img src="/logo.png" alt="CALDON™" class="page-header-logo">
+      <span class="page-header-title">The Process</span>
+    </div>
+
+    <p class="section-label">How It Works</p>
+    <h1>From First Conversation to Completed Asset</h1>
+    
+    <p class="lead">
+      Our process is designed around staged commitments and clear decision points. You're never locked in without understanding exactly what comes next—and you can walk away at any stage with full documentation.
+    </p>
+
+    <div class="process-step">
+      <span class="step-number">01</span>
+      <div class="step-content">
+        <h3>Initial Conversation</h3>
+        <p>We start with a confidential discussion to understand your investment objectives, risk appetite, timeline, and preferred structures.</p>
+        <p class="step-deliverables">No cost. No obligation. Typically 45-60 minutes.</p>
+      </div>
+    </div>
+
+    <div class="process-step">
+      <span class="step-number">02</span>
+      <div class="step-content">
+        <h3>Strategy & Site Identification</h3>
+        <p>Based on your criteria, we develop a tailored investment strategy and begin identifying suitable sites with market analysis and preliminary site reports.</p>
+        <p class="step-deliverables">Deliverables: Investment strategy brief, site reports, preliminary feasibility.</p>
+      </div>
+    </div>
+
+    <div class="process-step">
+      <span class="step-number">03</span>
+      <div class="step-content">
+        <h3>Option & Feasibility</h3>
+        <p>We negotiate vendor terms and secure the opportunity through an option agreement. This limits your exposure while we conduct detailed feasibility.</p>
+        <p class="step-deliverables">Deliverables: Option agreement, concept plans, detailed feasibility, risk register.</p>
+      </div>
+    </div>
+
+    <div class="process-step">
+      <span class="step-number">04</span>
+      <div class="step-content">
+        <h3>Design & Acquisition</h3>
+        <p>With feasibility confirmed, we proceed to detailed design and site acquisition including full documentation and engineering.</p>
+        <p class="step-deliverables">Deliverables: DA documentation, engineering drawings, settlement on site.</p>
+      </div>
+    </div>
+
+    <div class="process-step">
+      <span class="step-number">05</span>
+      <div class="step-content">
+        <h3>Approvals & Tender</h3>
+        <p>DA lodgement and management through to determination. Once approved, we prepare tender documentation and negotiate builder contracts.</p>
+        <p class="step-deliverables">Deliverables: DA approval, CC application, builder contract.</p>
+      </div>
+    </div>
+
+    <div class="process-step">
+      <span class="step-number">06</span>
+      <div class="step-content">
+        <h3>Construction & Completion</h3>
+        <p>Client-side project management throughout the build—progress monitoring, quality oversight, variation assessment, and defect management.</p>
+        <p class="step-deliverables">Deliverables: Completed asset, occupation certificate, depreciation schedule.</p>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <h3>Investor Portal</h3>
+      <p>
+        Every investor gets secure access to our online portal. Track project progress in real-time, view updates, access all deal and project documentation, and communicate directly with your project team—all in one place, available 24/7.
+      </p>
+    </div>
+
+    <div class="page-footer">
+      <span>CALDON™</span>
+      <span>5</span>
+    </div>
+  </div>
+
+  <!-- Page 6: Timeline -->
+  <div class="page">
+    <div class="page-header">
+      <img src="/logo.png" alt="CALDON™" class="page-header-logo">
+      <span class="page-header-title">Timeline</span>
+    </div>
+
+    <p class="section-label">Project Duration</p>
+    <h1>Typical Timeline</h1>
+    
+    <p class="lead">
+      Development timelines vary based on project scale and complexity. Here's what to expect for a typical townhouse or small apartment development.
+    </p>
+
+    <div class="timeline-item">
+      <span class="timeline-duration">1-2 months</span>
+      <div class="timeline-phase">
+        <strong>Strategy & Site Identification</strong><br>
+        Understanding your criteria, market research, site identification, preliminary assessment.
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <span class="timeline-duration">2-3 months</span>
+      <div class="timeline-phase">
+        <strong>Option & Feasibility</strong><br>
+        Option negotiation, concept design, council pre-lodgement, detailed feasibility.
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <span class="timeline-duration">2-3 months</span>
+      <div class="timeline-phase">
+        <strong>Design & Acquisition</strong><br>
+        Detailed design, engineering, consultant coordination, site settlement.
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <span class="timeline-duration">4-8 months</span>
+      <div class="timeline-phase">
+        <strong>Approvals</strong><br>
+        DA lodgement, assessment period, determination, CC preparation and approval.
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <span class="timeline-duration">1-2 months</span>
+      <div class="timeline-phase">
+        <strong>Tender & Contract</strong><br>
+        Builder engagement, tender assessment, contract negotiation and execution.
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <span class="timeline-duration">10-18 months</span>
+      <div class="timeline-phase">
+        <strong>Construction</strong><br>
+        Site establishment, construction, practical completion, defect rectification.
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <h3>Total Timeline: 20-36 months</h3>
+      <p>
+        From initial engagement to completed asset. Simpler projects at the shorter end; larger or more complex developments at the longer end.
+      </p>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2>Key Decision Points</h2>
+    
+    <p style="margin-bottom: 2mm;">You make decisions at defined milestones. You're never committed to the next phase until you've reviewed deliverables and approved proceeding.</p>
+
+    <div class="checklist">
+      <div class="checklist-item">Proceed to feasibility after reviewing site assessment</div>
+      <div class="checklist-item">Commit to acquisition after reviewing detailed feasibility</div>
+      <div class="checklist-item">Proceed to DA after reviewing design and cost plan</div>
+      <div class="checklist-item">Award builder contract after reviewing tender responses</div>
+      <div class="checklist-item">Approve major variations during construction</div>
+    </div>
+
+    <div class="page-footer">
+      <span>CALDON™</span>
+      <span>6</span>
+    </div>
+  </div>
+
+  <!-- Page 7: Fee Structure -->
+  <div class="page">
+    <div class="page-header">
+      <img src="/logo.png" alt="CALDON™" class="page-header-logo">
+      <span class="page-header-title">Fee Structure</span>
+    </div>
+
+    <p class="section-label">Our Fees</p>
+    <h1>Transparent, Staged Fees</h1>
+    
+    <p class="lead">
+      Our project fee covers all in-house services: project management, construction management, quantity surveying, architectural coordination, and DA administration. Fees are paid in stages tied to milestones—each triggered by completed deliverables. Our fee is typically a fraction of the value created through yield uplift, approval optimisation, and execution certainty.
+    </p>
+
+    <div class="fee-item">
+      <div>
+        <p class="fee-label">Initial</p>
+        <p class="fee-trigger">No cost</p>
+      </div>
+      <div class="fee-description">
+        <strong>Initial Conversation</strong> — Introductory meeting to understand your objectives. Confidential. No obligation.
+      </div>
+    </div>
+
+    <div class="fee-item">
+      <div>
+        <p class="fee-label">Stage 1</p>
+        <p class="fee-trigger">On engagement</p>
+      </div>
+      <div class="fee-description">
+        <strong>Preliminary Agreement</strong> — Covers strategy development, site identification, option negotiation, concept design, and feasibility.
+      </div>
+    </div>
+
+    <div class="fee-item">
+      <div>
+        <p class="fee-label">Stage 2</p>
+        <p class="fee-trigger">On feasibility</p>
+      </div>
+      <div class="fee-description">
+        <strong>Design & Acquisition</strong> — Covers detailed design, engineering coordination, consultant management, and site acquisition.
+      </div>
+    </div>
+
+    <div class="fee-item">
+      <div>
+        <p class="fee-label">Stage 3</p>
+        <p class="fee-trigger">On DA approval</p>
+      </div>
+      <div class="fee-description">
+        <strong>Approvals & Tender</strong> — Covers tender documentation, builder engagement, tender assessment, and contract negotiation.
+      </div>
+    </div>
+
+    <div class="fee-item">
+      <div>
+        <p class="fee-label">Stage 4</p>
+        <p class="fee-trigger">On CC & contract</p>
+      </div>
+      <div class="fee-description">
+        <strong>Construction Certificate & Builder Awarded</strong> — Final project fee payment when CC is issued and builder contract executed.
+      </div>
+    </div>
+
+    <div class="fee-item">
+      <div>
+        <p class="fee-label">PM Fee</p>
+        <p class="fee-trigger">Monthly</p>
+      </div>
+      <div class="fee-description">
+        <strong>Client-Side Project Management</strong> — Ongoing management throughout construction. Quoted separately based on project scale.
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2>What's Included—And What's Not</h2>
+    
+    <div class="two-col">
+      <div>
+        <p style="font-size: 8pt; font-weight: 500; margin-bottom: 1.5mm;">Our fee covers (all in-house):</p>
+        <div class="checklist">
+          <div class="checklist-item">Architecture & design</div>
+          <div class="checklist-item">Project management</div>
+          <div class="checklist-item">Construction management</div>
+          <div class="checklist-item">Quantity surveying & cost control</div>
+          <div class="checklist-item">DA preparation & administration</div>
+          <div class="checklist-item">Council DA & approval fees</div>
+          <div class="checklist-item">Construction certificate & building certification</div>
+          <div class="checklist-item">Engineering consultants</div>
+          <div class="checklist-item">Feasibility & tender management</div>
+        </div>
+      </div>
+      <div>
+        <p style="font-size: 8pt; font-weight: 500; margin-bottom: 1.5mm;">Investor costs (separate):</p>
+        <div class="checklist">
+          <div class="checklist-item">Site acquisition</div>
+          <div class="checklist-item">Construction costs</div>
+          <div class="checklist-item">Council contributions (s7.11/s7.12)</div>
+          <div class="checklist-item">Legal & conveyancing</div>
+          <div class="checklist-item">Accounting fees</div>
+          <div class="checklist-item">Finance costs (if applicable)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-box" style="margin-top: 3mm; padding: 3mm;">
+      <p style="font-size: 7.5pt; margin: 0; line-height: 1.4;"><strong style="color: #ffffff;">Professional Network</strong> — Need a solicitor, accountant, or financial planner? We can connect you with trusted professionals across property law, strata, construction contracts, property management, and finance—all familiar with development projects.</p>
+    </div>
+
+    <div class="page-footer">
+      <span>CALDON™</span>
+      <span>7</span>
+    </div>
+  </div>
+
+  <!-- Page 8: Risk Management -->
+  <div class="page">
+    <div class="page-header">
+      <img src="/logo.png" alt="CALDON™" class="page-header-logo">
+      <span class="page-header-title">Risk Management</span>
+    </div>
+
+    <p class="section-label">Managing Downside</p>
+    <h1>How We Protect Your Capital</h1>
+    
+    <p class="lead">
+      Development carries risk. Our job is to identify, quantify, and manage those risks—not eliminate them entirely, but structure projects so that downside is understood and contained.
+    </p>
+
+    <div class="risk-grid">
+      <div class="risk-item">
+        <h3>Option Structures</h3>
+        <p>Where possible, we secure sites through option agreements before you commit significant capital. If feasibility doesn't stack up, you walk away with limited exposure.</p>
+      </div>
+      <div class="risk-item">
+        <h3>Staged Commitment</h3>
+        <p>Each phase requires your approval before proceeding. You review deliverables, assess risks, and make informed decisions at each milestone.</p>
+      </div>
+      <div class="risk-item">
+        <h3>Conservative Feasibility</h3>
+        <p>We model with realistic assumptions—not optimistic sales prices or aggressive timelines. Projects that only work on best-case scenarios don't proceed.</p>
+      </div>
+      <div class="risk-item">
+        <h3>Fixed Price Construction</h3>
+        <p>We target fixed-price building contracts where possible, transferring construction cost risk to the builder before you commit.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2>Key Risks in Development</h2>
+
+    <table class="comparison-table">
+      <tr>
+        <th style="width: 20%;">Risk</th>
+        <th style="width: 35%;">What It Means</th>
+        <th style="width: 45%;">How We Manage It</th>
+      </tr>
+      <tr>
+        <td><strong>Planning</strong></td>
+        <td>DA refused or conditions affect feasibility</td>
+        <td>Council pre-lodgement, compliant designs, realistic yield</td>
+      </tr>
+      <tr>
+        <td><strong>Construction</strong></td>
+        <td>Costs exceed budget, delays, builder failure</td>
+        <td>Fixed-price contracts, quality builder selection, monitoring</td>
+      </tr>
+      <tr>
+        <td><strong>Market</strong></td>
+        <td>End values lower than projected</td>
+        <td>Conservative valuations, demand validation, exit flexibility</td>
+      </tr>
+      <tr>
+        <td><strong>Finance</strong></td>
+        <td>Inability to secure or service debt</td>
+        <td>Pre-approval discussions, conservative LVRs, cash flow planning</td>
+      </tr>
+      <tr>
+        <td><strong>Timeline</strong></td>
+        <td>Project takes longer than planned</td>
+        <td>Realistic timelines, contingency, proactive management</td>
+      </tr>
+    </table>
+
+    <div class="quote-box">
+      <p>Development isn't risk-free. But the difference between a good outcome and a poor one usually comes down to how risks are identified early and managed throughout.</p>
+    </div>
+
+    <div class="page-footer">
+      <span>CALDON™</span>
+      <span>8</span>
+    </div>
+  </div>
+
+  <!-- Page 9: Investment Structures -->
+  <div class="page">
+    <div class="page-header">
+      <img src="/logo.png" alt="CALDON™" class="page-header-logo">
+      <span class="page-header-title">Structures</span>
+    </div>
+
+    <p class="section-label">Ownership Options</p>
+    <h1>How Investments Are Structured</h1>
+    
+    <p class="lead">
+      The right ownership structure depends on your personal circumstances—tax position, asset protection goals, estate planning, and how you intend to hold or exit the asset. We work with your accountant and solicitor to ensure the structure is optimised from day one.
+    </p>
+
+    <div class="structure-grid">
+      <div class="structure-item">
+        <h3>Special Purpose Vehicle (SPV)</h3>
+        <p>A company established specifically for the project. Clean structure with limited liability. Can be wound up or sold post-completion.</p>
+        <p class="note">Suitable for: Single projects, joint ventures, clean exit strategies.</p>
+      </div>
+      <div class="structure-item">
+        <h3>Company</h3>
+        <p>Property held in a proprietary limited company. Flat 25-30% tax rate. No CGT discount, but profits can be retained or distributed as franked dividends.</p>
+        <p class="note">Suitable for: Multiple projects, reinvestment of profits, asset protection.</p>
+      </div>
+      <div class="structure-item">
+        <h3>Discretionary (Family) Trust</h3>
+        <p>Flexibility to distribute profits to beneficiaries in lower tax brackets. 50% CGT discount available. Strong asset protection benefits.</p>
+        <p class="note">Suitable for: Families with varying tax positions, estate planning.</p>
+      </div>
+      <div class="structure-item">
+        <h3>Unit Trust</h3>
+        <p>Fixed entitlements based on unit holdings. Suitable for multiple investors with defined shares. 50% CGT discount available to individual unit holders.</p>
+        <p class="note">Suitable for: Joint ventures, multiple investors, defined profit splits.</p>
+      </div>
+      <div class="structure-item">
+        <h3>Self-Managed Super Fund</h3>
+        <p>Property held within your SMSF. Concessional tax rates (15% income, 10% CGT if held 12+ months). Strict compliance requirements.</p>
+        <p class="note">Suitable for: Long-term hold strategies, retirement planning.</p>
+      </div>
+      <div class="structure-item">
+        <h3>Hybrid Structures</h3>
+        <p>Combinations such as a unit trust with a corporate trustee, or an SPV held by a family trust. Tailored to specific circumstances.</p>
+        <p class="note">Suitable for: Complex requirements, optimising tax and asset protection.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2>Working With Your Advisers</h2>
+    
+    <p>
+      We don't provide tax or legal advice—that's the role of your accountant and solicitor. What we do is coordinate with your advisory team to ensure the development structure aligns with your broader financial strategy.
+    </p>
+
+    <p style="margin-top: 2mm;">Before engaging on a project, we recommend discussing with your advisers:</p>
+
+    <div class="checklist">
+      <div class="checklist-item">The most appropriate ownership structure for your circumstances</div>
+      <div class="checklist-item">Finance options and how debt will be secured</div>
+      <div class="checklist-item">Cash flow requirements and timing of capital calls</div>
+      <div class="checklist-item">Exit strategy and tax implications of sale vs. hold</div>
+      <div class="checklist-item">GST registration and margin scheme considerations</div>
+    </div>
+
+    <div class="quote-box">
+      <p>Our role complements your existing advisory relationships—it doesn't replace them.</p>
+    </div>
+
+    <div class="page-footer">
+      <span>CALDON™</span>
+      <span>9</span>
+    </div>
+  </div>
+
+  <!-- Page 10: The Team -->
   <div class="page">
     <div class="page-header">
       <img src="/logo.png" alt="CALDON™" class="page-header-logo">
@@ -712,51 +1351,237 @@
     </div>
 
     <p class="section-label">Leadership</p>
-    <h1>The Team</h1>
+    <h1>Who You'll Work With</h1>
     
     <p class="lead">
-      CALDON™ is led by principals with backgrounds in property development, construction management, and investment structuring.
+      CALDON™ delivers all core development functions in-house: project management, construction management, quantity surveying, architectural coordination, and DA administration. This means single-point accountability, faster decisions, and no coordination gaps between consultants.
     </p>
 
-    <div class="three-col">
-      <div class="team-member">
-        <div class="team-photo"></div>
-        <p class="team-name">Bradley Caldon</p>
-        <p class="team-role">Managing Director</p>
-        <p class="team-quals">BConstMgt(Bldg)(Hons)</p>
-        <p class="team-focus">Research, Acquisitions, Quantity Surveying & Tender Management</p>
+    <div class="team-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 4mm;">
+      <div class="team-member" style="padding: 2.5mm;">
+        <img src="/team/bradley-caldon.png" alt="Bradley Caldon" class="team-photo" style="width: 30mm; height: 30mm; object-fit: cover; border-radius: 50%; margin: 0 auto 2.5mm auto; display: block;">
+        <p class="team-name" style="font-size: 10pt; text-align: center;">Bradley Caldon</p>
+        <p class="team-role" style="text-align: center;">Principal & Managing Director</p>
+        <p class="team-quals" style="font-size: 6.5pt; text-align: center;">BConstMgt(Bldg)(Hons) · Licensed Builder (NSW) · Building Practitioner · Chartered Builder (AIB)</p>
+        <p class="team-bio" style="font-size: 7pt; line-height: 1.4;">
+          Brad brings over 17 years' experience in construction and property development, spanning government infrastructure, land subdivisions, commercial developments, and award-winning luxury residential projects.
+        </p>
+        <p class="team-bio" style="margin-top: 1mm; font-size: 7pt; line-height: 1.4;">
+          A Licensed Builder and Chartered Builder (AIB), Brad has successfully established and led businesses across three industries: construction, property development, and manufacturing.
+        </p>
       </div>
-      <div class="team-member">
-        <div class="team-photo"></div>
-        <p class="team-name">John Caldon</p>
-        <p class="team-role">Senior Adviser</p>
-        <p class="team-quals">Licensed Builder (NSW)</p>
-        <p class="team-focus">Site Sourcing, Option Negotiation & Deal Strategy</p>
+      <div class="team-member" style="padding: 2.5mm;">
+        <img src="/team/john-caldon.png" alt="John Caldon" class="team-photo" style="width: 30mm; height: 30mm; object-fit: cover; border-radius: 50%; margin: 0 auto 2.5mm auto; display: block;">
+        <p class="team-name" style="font-size: 10pt; text-align: center;">John Caldon</p>
+        <p class="team-role" style="text-align: center;">Senior Adviser</p>
+        <p class="team-quals" style="font-size: 6.5pt; text-align: center;">Licensed Builder (NSW) · Government Policy Adviser · 40+ Years Industry Experience</p>
+        <p class="team-bio" style="font-size: 7pt; line-height: 1.4;">
+          John has constructed more than 1,600 buildings across a career spanning over four decades. His experience covers residential and commercial construction, large-scale land subdivision, and agricultural development.
+        </p>
+        <p class="team-bio" style="margin-top: 1mm; font-size: 7pt; line-height: 1.4;">
+          A trusted adviser to state and federal governments on industry policy, John brings unparalleled networks—from agents and vendors to councils and contractors.
+        </p>
       </div>
-      <div class="team-member">
-        <div class="team-photo"></div>
-        <p class="team-name">Andrew Eggins</p>
-        <p class="team-role">Design Director</p>
-        <p class="team-quals">BArch, AdvDipBus</p>
-        <p class="team-focus">Design, DA Management, Town Planning & Consultant Coordination</p>
+      <div class="team-member" style="padding: 2.5mm;">
+        <img src="/team/andrew-eggins.png" alt="Andrew Eggins" class="team-photo" style="width: 30mm; height: 30mm; object-fit: cover; border-radius: 50%; margin: 0 auto 2.5mm auto; display: block;">
+        <p class="team-name" style="font-size: 10pt; text-align: center;">Andrew Eggins</p>
+        <p class="team-role" style="text-align: center;">Design Director</p>
+        <p class="team-quals" style="font-size: 6.5pt; text-align: center;">BArch · AdvDipBus · BDAA Member</p>
+        <p class="team-bio" style="font-size: 7pt; line-height: 1.4;">
+          Andrew brings a unique combination of design expertise and commercial acumen. With over 1,000 building designs completed across residential, commercial, and mixed-use projects, he leads our design capability.
+        </p>
+        <p class="team-bio" style="margin-top: 1mm; font-size: 7pt; line-height: 1.4;">
+          An experienced Business Development Manager across multiple industries, Andrew understands what it takes to grow a business and build lasting client relationships.
+        </p>
       </div>
     </div>
 
-    <div class="advisers-section">
-      <h2>Working With Your Advisers</h2>
-      <p>We coordinate with your accountant, solicitor, and financial adviser to ensure investment structures are optimised from day one — whether through personal ownership, company, trust, or SMSF. Our role complements your existing advisory relationships.</p>
-    </div>
-
-    <div class="contact-block">
-      <p class="section-label">Private Enquiry</p>
-      <h2>Discuss an Opportunity</h2>
-      <p>Initial consultations are confidential and without obligation.<br>By introduction or direct approach.</p>
-      <p class="contact-email">invest@caldon.com.au</p>
+    <div style="margin-top: 4mm; padding-top: 3mm; border-top: 1px solid #e8e8e8;">
+      <h3 style="font-size: 9pt; margin-bottom: 2mm;">In-House Capabilities</h3>
+      <div class="consultant-grid" style="margin-bottom: 3mm;">
+        <div class="consultant-item" style="background: #f0f0f0;">
+          <h4>Architecture & Design</h4>
+          <p>Concept design through to construction documentation</p>
+        </div>
+        <div class="consultant-item" style="background: #f0f0f0;">
+          <h4>Project Management</h4>
+          <p>End-to-end coordination from feasibility to handover</p>
+        </div>
+        <div class="consultant-item" style="background: #f0f0f0;">
+          <h4>Construction Management</h4>
+          <p>Builder oversight, progress monitoring, quality control</p>
+        </div>
+        <div class="consultant-item" style="background: #f0f0f0;">
+          <h4>Quantity Surveying</h4>
+          <p>Cost planning, tender assessment, variation review</p>
+        </div>
+        <div class="consultant-item" style="background: #f0f0f0;">
+          <h4>DA Administration</h4>
+          <p>Application preparation, council liaison, approval management</p>
+        </div>
+        <div class="consultant-item" style="background: #f0f0f0;">
+          <h4>Feasibility Analysis</h4>
+          <p>Site assessment, financial modelling, risk evaluation</p>
+        </div>
+      </div>
+      <h3 style="font-size: 9pt; margin-bottom: 2mm;">External Consultants (as required)</h3>
+      <div class="consultant-grid">
+        <div class="consultant-item">
+          <h4>Engineering</h4>
+          <p>Structural, civil, hydraulic, electrical</p>
+        </div>
+        <div class="consultant-item">
+          <h4>Surveying</h4>
+          <p>Land survey, setout, strata subdivision</p>
+        </div>
+        <div class="consultant-item">
+          <h4>Legal</h4>
+          <p>Contracts, options, conveyancing</p>
+        </div>
+      </div>
     </div>
 
     <div class="page-footer">
       <span>CALDON™</span>
-      <span>5</span>
+      <span>10</span>
+    </div>
+  </div>
+
+  <!-- Page 11: FAQ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="/logo.png" alt="CALDON™" class="page-header-logo">
+      <span class="page-header-title">FAQ</span>
+    </div>
+
+    <p class="section-label">Common Questions</p>
+    <h1>What Investors Ask</h1>
+
+    <div class="faq-item">
+      <p class="faq-question">What's the minimum investment?</p>
+      <p class="faq-answer">
+        We typically work on projects requiring $500,000 or more in investor equity. This varies based on project type and whether finance is used.
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <p class="faq-question">Do I need development experience?</p>
+      <p class="faq-answer">
+        No. Our role is to bring the development expertise. What we look for is investors who understand property fundamentals and can commit capital for the project duration.
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <p class="faq-question">How involved do I need to be?</p>
+      <p class="faq-answer">
+        You stay informed, not consumed. Our secure investor portal gives you 24/7 access to project progress, updates, documentation, and direct communication with your team. Most investors spend a few hours per month on project matters.
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <p class="faq-question">What if the project doesn't proceed?</p>
+      <p class="faq-answer">
+        If feasibility doesn't support proceeding, you walk away with the documentation we've prepared. Where we've used option structures, your capital at risk is limited to option fee and feasibility costs.
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <p class="faq-question">Can I use finance?</p>
+      <p class="faq-answer">
+        Yes, most investors use a combination of equity and debt. Development finance typically requires 30-40% equity, though this varies by lender and project type.
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <p class="faq-question">What's my exit strategy?</p>
+      <p class="faq-answer">
+        You decide. Options include selling the completed asset, holding and leasing, refinancing to extract equity, or a combination. We help coordinate whichever exit suits your objectives.
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <p class="faq-question">Do you hold Professional Indemnity insurance?</p>
+      <p class="faq-answer">
+        Yes. We maintain Professional Indemnity insurance appropriate to our services. Details are provided during our initial discussions.
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <p class="faq-question">Can you also build the project?</p>
+      <p class="faq-answer">
+        For select projects, we can deliver construction through our in-house building capability—providing end-to-end delivery. Available by arrangement.
+      </p>
+    </div>
+
+    <div class="page-footer">
+      <span>CALDON™</span>
+      <span>11</span>
+    </div>
+  </div>
+
+  <!-- Page 12: Next Steps -->
+  <div class="page">
+    <div class="page-header">
+      <img src="/logo.png" alt="CALDON™" class="page-header-logo">
+      <span class="page-header-title">Next Steps</span>
+    </div>
+
+    <p class="section-label">Getting Started</p>
+    <h1>Start a Conversation</h1>
+    
+    <p class="lead">
+      If what you've read resonates, the next step is a confidential conversation to explore whether there's a fit. No obligation, no pressure—just an honest discussion about what you're looking to achieve.
+    </p>
+
+    <h2>What We'll Discuss</h2>
+    <p>
+      Our initial conversation typically covers your investment objectives, risk appetite, timeline, and preferred structures. We'll explain our model in more detail and answer any questions about how we work.
+    </p>
+    <p>
+      If there's alignment, we discuss next steps—whether that's presenting specific opportunities we're currently working on, or developing a strategy to identify opportunities that match your criteria.
+    </p>
+
+    <div class="divider"></div>
+
+    <h2>What to Bring</h2>
+    
+    <p>To make our first conversation productive, it helps if you've thought about:</p>
+
+    <div class="checklist">
+      <div class="checklist-item">How much capital you're looking to deploy (approximate range is fine)</div>
+      <div class="checklist-item">Your timeline for investment—ready now, or planning ahead?</div>
+      <div class="checklist-item">Risk tolerance—conservative, moderate, or comfortable with higher risk/return?</div>
+      <div class="checklist-item">Preferred exit—build to sell, build to hold, or open to either?</div>
+      <div class="checklist-item">Any geographic or project type preferences</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2>How to Reach Us</h2>
+    
+    <p>
+      Initial enquiries are welcome by email or through our website. We respond to all enquiries within 48 hours and schedule conversations at a time that suits you.
+    </p>
+
+    <div class="contact-block">
+      <p class="section-label">Get in Touch</p>
+      <h2>Selective Partnerships</h2>
+      <p>We work with a limited number of investors each year. Initial conversations are confidential and without obligation.</p>
+      <p class="contact-email">invest@caldon.com.au</p>
+      <p class="contact-website">www.caldon.com.au</p>
+    </div>
+
+    <div class="page-footer">
+      <span>CALDON™</span>
+      <span>12</span>
+    </div>
+  </div>
+
+  <!-- Page 13: Back Cover -->
+  <div class="page cover">
+    <img src="/logo.png" alt="CALDON™" class="cover-logo" style="width: 120px; margin-bottom: 0;">
+    <div class="cover-footer">
+      invest@caldon.com.au · www.caldon.com.au
     </div>
   </div>
 

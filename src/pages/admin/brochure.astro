@@ -434,7 +434,7 @@ const issueDate = now.toLocaleDateString('en-AU', { month: 'long', year: 'numeri
   <!-- Cover page -->
   <div class="page cover">
     <img src="/logo.png" alt="CALDON" class="cover-logo-img" />
-    <div class="cover-tagline">Property Development & Investment</div>
+    <div class="cover-tagline">Development Expertise. Investor Ownership.</div>
     <h1 class="cover-title">Investment Opportunities</h1>
     <p class="cover-issue">{issueDate} Edition</p>
     <div class="cover-count">{opportunities?.length || 0} Active Opportunities</div>
@@ -442,19 +442,15 @@ const issueDate = now.toLocaleDateString('en-AU', { month: 'long', year: 'numeri
   
   <!-- Introduction page -->
   <div class="page intro">
-    <h2>From the Principal</h2>
+    <h2>Who We Are</h2>
     <p>
-      Thank you for your continued interest in CALDON's development opportunities. 
-      This month's portfolio features carefully selected projects across NSW, 
-      each offering compelling returns for qualified investors.
+      CALDON is a property development management firm based in NSW. We partner with private investors to deliver completed development assets—managing the entire process from site identification through to construction and handover.
     </p>
     <p>
-      Our team conducts thorough due diligence on every opportunity, ensuring 
-      alignment with our core principles of quality, transparency, and sustainable returns.
+      We started because we kept seeing the same problem: sites underutilised, planning opportunities missed, returns left on the table. Investors without the right expertise were settling for less than what was possible.
     </p>
     <p>
-      I invite you to review the opportunities within and contact our team to 
-      discuss how we might work together.
+      We exist to close that gap. You retain ownership of the asset. We handle everything else.
     </p>
     
     <div class="principal-signature">
@@ -463,10 +459,56 @@ const issueDate = now.toLocaleDateString('en-AU', { month: 'long', year: 'numeri
     </div>
     
     <div class="intro-contact">
-      <p><strong>To register your interest:</strong></p>
-      <p>Email: invest@caldon.com.au</p>
-      <p>Web: www.caldon.com.au/enquiry</p>
+      <p><strong>To start a conversation:</strong></p>
+      <p>invest@caldon.com.au</p>
+      <p>www.caldon.com.au/contact</p>
     </div>
+  </div>
+  
+  <!-- How It Works page -->
+  <div class="page intro">
+    <h2>How It Works</h2>
+    <p>
+      We manage the entire development process on your behalf—from site identification through to design, approvals, construction, and completion. You retain full ownership of the asset throughout.
+    </p>
+    <p>
+      Our service is suited to investors who want development-level returns without the operational burden. You don't need a specific project in mind. Most of our partners come to us with investment goals rather than sites—we source and assess opportunities aligned with your criteria.
+    </p>
+    <p>
+      <strong>Minimum project size:</strong> We typically work on projects with a total development cost of $1 million or above.
+    </p>
+    <p>
+      <strong>Regions:</strong> We focus on regional and metropolitan NSW, with particular expertise in the Mid North Coast, Hunter, and Central Coast. We have established relationships with local councils, agents, and contractors in these areas.
+    </p>
+    <p>
+      <strong>Timeline:</strong> A typical development runs 18–36 months from site identification to completion. We provide detailed programme estimates during feasibility so you know what to expect.
+    </p>
+    <p>
+      <strong>Your structure:</strong> We work with your accountant, solicitor, and financial adviser to ensure the investment structure is optimised—whether personal ownership, company, trust, or SMSF.
+    </p>
+  </div>
+
+  <!-- Fees & Process page -->
+  <div class="page intro">
+    <h2>Fees & Process</h2>
+    <p>
+      Our fee is calculated as a percentage of total project value, paid in stages tied to project milestones. Design, approval, and consultant costs are additional and form part of your overall project budget.
+    </p>
+    <p>
+      <strong>Staged payments:</strong> You're never overcommitted. Each phase delivers tangible value before the next payment is due—and includes clear exit points. If the numbers don't work at feasibility, you walk away with full documentation and no ongoing obligation.
+    </p>
+    <p>
+      <strong>What's included:</strong> Our fee covers site sourcing, feasibility, project coordination, and oversight throughout the development lifecycle. We manage all consultants on your behalf.
+    </p>
+    <p>
+      <strong>Construction oversight:</strong> Client-side project management during construction is quoted separately. This covers progress monitoring, variation assessment, quality oversight, and reporting through to completion and handover.
+    </p>
+    <p>
+      <strong>Risk management:</strong> We structure acquisitions through option agreements where possible, limiting your exposure until feasibility is confirmed. We conduct thorough due diligence before recommending any site, and our quantity surveying processes include appropriate contingencies before you commit to construction.
+    </p>
+    <p>
+      <strong>Insurance:</strong> We hold Professional Indemnity insurance appropriate to our services. Details provided on request.
+    </p>
   </div>
   
   <!-- Opportunity pages -->
@@ -549,8 +591,8 @@ const issueDate = now.toLocaleDateString('en-AU', { month: 'long', year: 'numeri
       </div>
       
       <div class="opportunity-footer">
-        <span class="opportunity-footer-cta">To express interest: invest@caldon.com.au | www.caldon.com.au/enquiry</span>
-        <span class="opportunity-footer-page">CALDON™ · {issueDate} · Page {index + 3}</span>
+        <span class="opportunity-footer-cta">invest@caldon.com.au | www.caldon.com.au/contact</span>
+        <span class="opportunity-footer-page">CALDON™ · {issueDate} · Page {index + 5}</span>
       </div>
     </div>
   ))}
@@ -558,7 +600,7 @@ const issueDate = now.toLocaleDateString('en-AU', { month: 'long', year: 'numeri
   <!-- Back cover -->
   <div class="page back-cover">
     <img src="/logo.png" alt="CALDON" class="back-cover-logo-img" />
-    <p>Property Development & Investment</p>
+    <p>Development Expertise. Investor Ownership.</p>
     <p>&nbsp;</p>
     <p>www.caldon.com.au</p>
     <p>invest@caldon.com.au</p>
